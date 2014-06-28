@@ -15,6 +15,7 @@ namespace FE_setup
 {
     public partial class mainForm : Form
     {
+        private string sslString = "SSL=true;SslMode=Require;";
         public mainForm()
         { InitializeComponent(); }
 
@@ -89,7 +90,7 @@ namespace FE_setup
                 else
                 { return; }
 
-                string conn = "Server=" + spf.srvIP + ";Port=" + spf.srvPort + ";User Id=postgres;Password=" + spf.pw + ";Database=endoDB;";
+                string conn = "Server=" + spf.srvIP + ";Port=" + spf.srvPort + ";User Id=postgres;Password=" + spf.pw + ";Database=endoDB;" + sslString;
                 functions.functionResult rst;
 
                 if (File.Exists(sql_path))
@@ -109,7 +110,7 @@ namespace FE_setup
                         else if (rst == functions.functionResult.connectionError)
                         { MessageBox.Show("[SQL: Line " + (i + 1).ToString() + "]" + Properties.Resources.ConnectFailed, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                     }
-                    MessageBox.Show("[SQL File]" + Properties.Resources.UpdateDone, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("[SQL File]" + Properties.Resources.ProcedureFinished, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
@@ -128,7 +129,8 @@ namespace FE_setup
 
             if (spf.pwSet)
             {
-                string conn = "Server=" + spf.srvIP + ";Port=" + spf.srvPort + ";User Id=postgres;Password=" + spf.pw + ";Database=endoDB;";
+                //string conn = "Server=" + spf.srvIP + ";Port=" + spf.srvPort + ";User Id=postgres;Password=" + spf.pw + ";Database=endoDB;";
+                string conn = "Server=" + spf.srvIP + ";Port=" + spf.srvPort + ";User Id=postgres;Password=" + spf.pw + ";" + sslString;
                 functions.functionResult rst;
 
                 SetDbUserPw sdup = new SetDbUserPw();
@@ -138,9 +140,15 @@ namespace FE_setup
                 {
                     rst = functions.doSQL(conn, "ALTER ROLE db_user WITH ENCRYPTED PASSWORD \'" + sdup.pw + "\';");
                     if (rst == functions.functionResult.failed)
-                    { MessageBox.Show(Properties.Resources.DataBaseError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                    {
+                        MessageBox.Show(Properties.Resources.DataBaseError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                     else if (rst == functions.functionResult.connectionError)
-                    { MessageBox.Show(Properties.Resources.ConnectFailed, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                    {
+                        MessageBox.Show(Properties.Resources.ConnectFailed, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                     MessageBox.Show(Properties.Resources.UpdateDone, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
