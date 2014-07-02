@@ -113,6 +113,12 @@
     <Compile Include="SetPwForm.Designer.cs">
       <DependentUpon>SetPwForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Version.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Version.Designer.cs">
+      <DependentUpon>Version.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="mainForm.ja.resx">
       <DependentUpon>mainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -144,6 +150,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SetPwForm.resx">
       <DependentUpon>SetPwForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Version.resx">
+      <DependentUpon>Version.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="FE_setup_一時キー.pfx" />
     <None Include="Properties\Settings.settings">

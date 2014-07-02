@@ -117,105 +117,144 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&gt;&gt;bt_do_sql.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
-  </data>
-  <data name="&gt;&gt;btCreateEndoDB.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="btSetDbUserPw.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 91</value>
-  </data>
-  <data name="&gt;&gt;bt_do_sql.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="btSetDbUserPw.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;btSetDbUserPw.Name" xml:space="preserve">
-    <value>btSetDbUserPw</value>
-  </data>
-  <data name="btCreateEndoDB.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="btSetDbUserPw.Font" type="System.Drawing.Font, System.Drawing">
-    <value>MS UI Gothic, 11.25pt</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>mainForm</value>
-  </data>
-  <data name="bt_do_sql.Size" type="System.Drawing.Size, System.Drawing">
-    <value>81, 42</value>
-  </data>
-  <data name="btCreateEndoDB.Text" xml:space="preserve">
-    <value>Create EndoDB</value>
-  </data>
-  <data name="btSetDbUserPw.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 42</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>436, 156</value>
-  </data>
-  <data name="bt_do_sql.Location" type="System.Drawing.Point, System.Drawing">
-    <value>321, 23</value>
-  </data>
-  <data name="&gt;&gt;btCreateEndoDB.Name" xml:space="preserve">
-    <value>btCreateEndoDB</value>
-  </data>
   <data name="btCreateEndoDB.Font" type="System.Drawing.Font, System.Drawing">
     <value>MS UI Gothic, 11.25pt</value>
   </data>
-  <data name="bt_do_sql.Font" type="System.Drawing.Font, System.Drawing">
-    <value>MS UI Gothic, 11.25pt</value>
-  </data>
-  <data name="&gt;&gt;btSetDbUserPw.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btCreateEndoDB.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="btCreateEndoDB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 37</value>
   </data>
   <data name="btCreateEndoDB.Size" type="System.Drawing.Size, System.Drawing">
     <value>172, 42</value>
   </data>
-  <data name="&gt;&gt;bt_do_sql.Name" xml:space="preserve">
-    <value>bt_do_sql</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="btCreateEndoDB.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;bt_do_sql.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="btCreateEndoDB.Text" xml:space="preserve">
+    <value>Create EndoDB</value>
   </data>
-  <data name="&gt;&gt;btSetDbUserPw.Type" xml:space="preserve">
+  <data name="&gt;&gt;btCreateEndoDB.Name" xml:space="preserve">
+    <value>btCreateEndoDB</value>
+  </data>
+  <data name="&gt;&gt;btCreateEndoDB.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="bt_do_sql.Text" xml:space="preserve">
-    <value>Do SQL</value>
-  </data>
-  <data name="bt_do_sql.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="btSetDbUserPw.Text" xml:space="preserve">
-    <value>Set db_user password</value>
-  </data>
-  <data name="&gt;&gt;btSetDbUserPw.Parent" xml:space="preserve">
+  <data name="&gt;&gt;btCreateEndoDB.Parent" xml:space="preserve">
     <value>$this</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Findings editor setup</value>
   </data>
   <data name="&gt;&gt;btCreateEndoDB.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="btCreateEndoDB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 23</value>
+  <data name="bt_do_sql.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MS UI Gothic, 11.25pt</value>
+  </data>
+  <data name="bt_do_sql.Location" type="System.Drawing.Point, System.Drawing">
+    <value>321, 37</value>
+  </data>
+  <data name="bt_do_sql.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 42</value>
+  </data>
+  <data name="bt_do_sql.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="bt_do_sql.Text" xml:space="preserve">
+    <value>Do SQL</value>
+  </data>
+  <data name="&gt;&gt;bt_do_sql.Name" xml:space="preserve">
+    <value>bt_do_sql</value>
+  </data>
+  <data name="&gt;&gt;bt_do_sql.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bt_do_sql.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;bt_do_sql.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btSetDbUserPw.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MS UI Gothic, 11.25pt</value>
+  </data>
+  <data name="btSetDbUserPw.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 105</value>
+  </data>
+  <data name="btSetDbUserPw.Size" type="System.Drawing.Size, System.Drawing">
+    <value>172, 42</value>
+  </data>
+  <data name="btSetDbUserPw.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="btSetDbUserPw.Text" xml:space="preserve">
+    <value>Set db_user password</value>
+  </data>
+  <data name="&gt;&gt;btSetDbUserPw.Name" xml:space="preserve">
+    <value>btSetDbUserPw</value>
+  </data>
+  <data name="&gt;&gt;btSetDbUserPw.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btSetDbUserPw.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btSetDbUserPw.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="versionToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 20</value>
+  </data>
+  <data name="versionToolStripMenuItem.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="menuStrip1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>436, 24</value>
+  </data>
+  <data name="menuStrip1.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="menuStrip1.Text" xml:space="preserve">
+    <value>menuStrip1</value>
+  </data>
+  <data name="&gt;&gt;menuStrip1.Name" xml:space="preserve">
+    <value>menuStrip1</value>
+  </data>
+  <data name="&gt;&gt;menuStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuStrip1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;menuStrip1.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>436, 165</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Findings editor setup</value>
+  </data>
+  <data name="&gt;&gt;versionToolStripMenuItem.Name" xml:space="preserve">
+    <value>versionToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;versionToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>mainForm</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

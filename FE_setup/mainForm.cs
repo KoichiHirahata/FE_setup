@@ -160,5 +160,11 @@ namespace FE_setup
 
             spf.Dispose();
         }
+
+        private void versionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Version ve = new Version();
+            ve.ShowDialog(this);
+        }
     }
 }
