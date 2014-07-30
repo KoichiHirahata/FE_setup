@@ -1,0 +1,2047 @@
+--
+-- PostgreSQL database cluster dump
+--
+
+-- Started on 2014-07-02 13:46:34
+
+SET default_transaction_read_only = off;
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+
+--
+-- Roles
+--
+
+CREATE ROLE db_user;
+ALTER ROLE db_user WITH NOSUPERUSER INHERIT NOCREATEROLE CREATEDB LOGIN NOREPLICATION PASSWORD 'md5ab2e21d1842811a25968c8f89b5995be' VALID UNTIL '2199-01-01 00:00:00+09';
+CREATE ROLE db_users;
+ALTER ROLE db_users WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB NOLOGIN NOREPLICATION VALID UNTIL '2199-01-01 00:00:00+09';
+
+
+--
+-- Role memberships
+--
+
+GRANT db_users TO db_user GRANTED BY postgres;
+
+
+
+
+--
+-- Database creation
+--
+
+CREATE DATABASE "endoDB" WITH TEMPLATE = template0 OWNER = postgres;
+REVOKE ALL ON DATABASE template1 FROM PUBLIC;
+REVOKE ALL ON DATABASE template1 FROM postgres;
+GRANT ALL ON DATABASE template1 TO postgres;
+GRANT CONNECT ON DATABASE template1 TO PUBLIC;
+
+
+\connect "endoDB"
+
+SET default_transaction_read_only = off;
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.4
+-- Dumped by pg_dump version 9.3.4
+-- Started on 2014-07-02 13:46:34
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 193 (class 3079 OID 11750)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2109 (class 0 OID 0)
+-- Dependencies: 193
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 170 (class 1259 OID 43157)
+-- Name: db_version; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE db_version (
+    db_version character varying(10) NOT NULL
+);
+
+
+ALTER TABLE public.db_version OWNER TO postgres;
+
+SET default_with_oids = true;
+
+--
+-- TOC entry 171 (class 1259 OID 43160)
+-- Name: default_findings; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE default_findings (
+    exam_type smallint NOT NULL,
+    findings text
+);
+
+
+ALTER TABLE public.default_findings OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 43166)
+-- Name: department; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE department (
+    code smallint NOT NULL,
+    name1 character varying(45) NOT NULL,
+    name2 character varying(20),
+    dp_visible boolean,
+    dp_order smallint,
+    CONSTRAINT code_check CHECK (((0 > code) OR (0 < code)))
+);
+
+
+ALTER TABLE public.department OWNER TO postgres;
+
+--
+-- TOC entry 173 (class 1259 OID 43170)
+-- Name: diag; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE diag (
+    diag_no integer NOT NULL,
+    exam_no integer NOT NULL,
+    diag_code integer NOT NULL,
+    suspect boolean,
+    location character varying(255),
+    locate_str_after_diag boolean
+);
+
+
+ALTER TABLE public.diag OWNER TO postgres;
+
+--
+-- TOC entry 174 (class 1259 OID 43173)
+-- Name: diag_category; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE diag_category (
+    id integer NOT NULL,
+    start_no integer NOT NULL,
+    end_no integer,
+    name_eng character varying(50),
+    name_jp character varying(50),
+    bt_order smallint,
+    visible boolean,
+    name_ar character varying(50),
+    name_bg character varying(50),
+    name_hr character varying(50),
+    name_cs character varying(50),
+    name_da character varying(50),
+    name_nl character varying(50),
+    name_et character varying(50),
+    name_fi character varying(50),
+    name_fr character varying(50),
+    name_de character varying(50),
+    name_el character varying(50),
+    name_he character varying(50),
+    name_hu character varying(50),
+    name_it character varying(50),
+    name_ko character varying(50),
+    name_lv character varying(50),
+    name_lt character varying(50),
+    name_no character varying(50),
+    name_pl character varying(50),
+    name_pt_br character varying(50),
+    name_pt_pt character varying(50),
+    name_ro character varying(50),
+    name_ru character varying(50),
+    name_sr character varying(50),
+    name_han_s character varying(50),
+    name_sk character varying(50),
+    name_sl character varying(50),
+    name_es character varying(50),
+    name_sv character varying(50),
+    name_th character varying(50),
+    name_han_t character varying(50),
+    name_tr character varying(50),
+    name_uk character varying(50)
+);
+
+
+ALTER TABLE public.diag_category OWNER TO postgres;
+
+--
+-- TOC entry 175 (class 1259 OID 43179)
+-- Name: diag_diag_no_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE diag_diag_no_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.diag_diag_no_seq OWNER TO postgres;
+
+--
+-- TOC entry 2115 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: diag_diag_no_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE diag_diag_no_seq OWNED BY diag.diag_no;
+
+
+--
+-- TOC entry 176 (class 1259 OID 43181)
+-- Name: diag_name; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE diag_name (
+    no integer NOT NULL,
+    name_eng character varying(200),
+    name_jp character varying(200),
+    diag_order integer,
+    diag_visible boolean,
+    name_ar character varying(200),
+    name_bg character varying(200),
+    name_hr character varying(200),
+    name_cs character varying(200),
+    name_da character varying(200),
+    name_nl character varying(200),
+    name_et character varying(200),
+    name_fi character varying(200),
+    name_fr character varying(200),
+    name_de character varying(200),
+    name_el character varying(200),
+    name_he character varying(200),
+    name_hu character varying(200),
+    name_it character varying(200),
+    name_ko character varying(200),
+    name_lv character varying(200),
+    name_lt character varying(200),
+    name_no character varying(200),
+    name_pl character varying(200),
+    name_pt_br character varying(200),
+    name_pt_pt character varying(200),
+    name_ro character varying(200),
+    name_ru character varying(200),
+    name_sr character varying(200),
+    name_han_s character varying(200),
+    name_sk character varying(200),
+    name_sl character varying(200),
+    name_es character varying(200),
+    name_sv character varying(200),
+    name_th character varying(200),
+    name_han_t character varying(200),
+    name_tr character varying(200),
+    name_uk character varying(200)
+);
+
+
+ALTER TABLE public.diag_name OWNER TO postgres;
+
+--
+-- TOC entry 177 (class 1259 OID 43187)
+-- Name: equipment; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE equipment (
+    equipment_no integer NOT NULL,
+    name character varying(45),
+    equipment_type smallint,
+    gf_order integer,
+    cf_order integer,
+    sv_order integer,
+    s_order integer,
+    us_order integer,
+    scope boolean,
+    us boolean,
+    equipment_visible boolean,
+    b_order integer,
+    CONSTRAINT no_check CHECK (((0 > equipment_no) OR (0 < equipment_no)))
+);
+
+
+ALTER TABLE public.equipment OWNER TO postgres;
+
+--
+-- TOC entry 178 (class 1259 OID 43191)
+-- Name: equipment_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE equipment_type (
+    type_no smallint NOT NULL,
+    name character varying(15),
+    type_order smallint,
+    type_visible boolean
+);
+
+
+ALTER TABLE public.equipment_type OWNER TO postgres;
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 179 (class 1259 OID 43194)
+-- Name: exam; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE exam (
+    exam_id integer NOT NULL,
+    pt_id character varying(100),
+    purpose text,
+    department smallint,
+    order_dr character varying(45),
+    ward_id character varying(5),
+    exam_day date,
+    exam_type smallint,
+    pathology smallint,
+    patho_no character varying(100),
+    reply_patho smallint,
+    operator1 character varying(20),
+    operator2 character varying(20),
+    operator3 character varying(20),
+    operator4 character varying(20),
+    operator5 character varying(20),
+    diag_dr character varying(20),
+    final_diag_dr character varying(20),
+    equipment integer,
+    place_no smallint,
+    findings text,
+    comment text,
+    exam_status smallint,
+    explanation smallint,
+    lock_time timestamp without time zone,
+    terminal_ip character varying(40),
+    exam_visible boolean
+);
+
+
+ALTER TABLE public.exam OWNER TO postgres;
+
+--
+-- TOC entry 180 (class 1259 OID 43200)
+-- Name: exam_exam_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE exam_exam_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.exam_exam_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2121 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: exam_exam_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE exam_exam_id_seq OWNED BY exam.exam_id;
+
+
+SET default_with_oids = true;
+
+--
+-- TOC entry 181 (class 1259 OID 43202)
+-- Name: exam_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE exam_type (
+    type_no smallint NOT NULL,
+    name_eng character varying(45),
+    name_jp character varying(45),
+    type_order smallint,
+    type_visible boolean,
+    name_ar character varying(45),
+    name_bg character varying(45),
+    name_hr character varying(45),
+    name_cs character varying(45),
+    name_da character varying(45),
+    name_nl character varying(45),
+    name_et character varying(45),
+    name_fi character varying(45),
+    name_fr character varying(45),
+    name_de character varying(45),
+    name_el character varying(45),
+    name_he character varying(45),
+    name_hu character varying(45),
+    name_it character varying(45),
+    name_ko character varying(45),
+    name_lv character varying(45),
+    name_lt character varying(45),
+    name_no character varying(45),
+    name_pl character varying(45),
+    name_pt_br character varying(45),
+    name_pt_pt character varying(45),
+    name_ro character varying(45),
+    name_ru character varying(45),
+    name_sr character varying(45),
+    name_han_s character varying(45),
+    name_sk character varying(45),
+    name_sl character varying(45),
+    name_es character varying(45),
+    name_sv character varying(45),
+    name_th character varying(45),
+    name_han_t character varying(45),
+    name_tr character varying(45),
+    name_uk character varying(45)
+);
+
+
+ALTER TABLE public.exam_type OWNER TO postgres;
+
+--
+-- TOC entry 182 (class 1259 OID 43208)
+-- Name: explanation; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE explanation (
+    no smallint NOT NULL,
+    explanation_status smallint,
+    status_order smallint,
+    status_visible boolean
+);
+
+
+ALTER TABLE public.explanation OWNER TO postgres;
+
+--
+-- TOC entry 183 (class 1259 OID 43211)
+-- Name: group_no; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE group_no (
+    no smallint NOT NULL,
+    group_name character varying(20),
+    group_order smallint,
+    group_visible boolean
+);
+
+
+ALTER TABLE public.group_no OWNER TO postgres;
+
+--
+-- TOC entry 184 (class 1259 OID 43214)
+-- Name: op_category; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE op_category (
+    opc_no smallint NOT NULL,
+    opc_name character varying(15),
+    opc_visible boolean,
+    opc_order smallint,
+    can_diag boolean
+);
+
+
+ALTER TABLE public.op_category OWNER TO postgres;
+
+--
+-- TOC entry 185 (class 1259 OID 43217)
+-- Name: operator; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE operator (
+    operator_id character varying(20) NOT NULL,
+    op_name character varying(45) NOT NULL,
+    op_order smallint,
+    department smallint,
+    pw character varying(45) NOT NULL,
+    admin_op boolean,
+    op_category smallint NOT NULL,
+    lock_time timestamp without time zone,
+    terminal_ip character varying(40),
+    op_visible boolean,
+    allow_fc boolean
+);
+
+
+ALTER TABLE public.operator OWNER TO postgres;
+
+--
+-- TOC entry 186 (class 1259 OID 43220)
+-- Name: patho_diag; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE patho_diag (
+    diag_no integer NOT NULL,
+    exam_no integer,
+    group_no smallint,
+    diagnosis text
+);
+
+
+ALTER TABLE public.patho_diag OWNER TO postgres;
+
+--
+-- TOC entry 187 (class 1259 OID 43226)
+-- Name: patient; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE patient (
+    pt_id character varying(100) NOT NULL,
+    pt_name text NOT NULL,
+    birthday date,
+    gender smallint,
+    pt_memo text,
+    lock_time timestamp without time zone,
+    terminal_ip character varying(40)
+);
+
+
+ALTER TABLE public.patient OWNER TO postgres;
+
+--
+-- TOC entry 188 (class 1259 OID 43232)
+-- Name: place; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE place (
+    place_no smallint NOT NULL,
+    name1 character varying(20),
+    name2 character varying(20),
+    place_order_endo smallint,
+    place_order_us smallint,
+    place_visible boolean,
+    CONSTRAINT no_check CHECK (((0 > place_no) OR (0 < place_no)))
+);
+
+
+ALTER TABLE public.place OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1259 OID 43236)
+-- Name: status; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE status (
+    status_no smallint NOT NULL,
+    name_eng character varying(20),
+    name_jp character varying(20),
+    status_order smallint,
+    status_visible boolean,
+    name_ar character varying(20),
+    name_bg character varying(20),
+    name_hr character varying(20),
+    name_cs character varying(20),
+    name_da character varying(20),
+    name_nl character varying(20),
+    name_et character varying(20),
+    name_fi character varying(20),
+    name_fr character varying(20),
+    name_de character varying(20),
+    name_el character varying(20),
+    name_he character varying(20),
+    name_hu character varying(20),
+    name_it character varying(20),
+    name_ko character varying(20),
+    name_lv character varying(20),
+    name_lt character varying(20),
+    name_no character varying(20),
+    name_pl character varying(20),
+    name_pt_br character varying(20),
+    name_pt_pt character varying(20),
+    name_ro character varying(20),
+    name_ru character varying(20),
+    name_sr character varying(20),
+    name_han_s character varying(20),
+    name_sk character varying(20),
+    name_sl character varying(20),
+    name_es character varying(20),
+    name_sv character varying(20),
+    name_th character varying(20),
+    name_han_t character varying(20),
+    name_tr character varying(20),
+    name_uk character varying(20)
+);
+
+
+ALTER TABLE public.status OWNER TO postgres;
+
+--
+-- TOC entry 190 (class 1259 OID 43242)
+-- Name: ward; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ward (
+    ward_no character varying(10) NOT NULL,
+    ward character varying(45),
+    ward_order smallint,
+    ward_visible boolean
+);
+
+
+ALTER TABLE public.ward OWNER TO postgres;
+
+--
+-- TOC entry 191 (class 1259 OID 43245)
+-- Name: words; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE words (
+    no integer NOT NULL,
+    words1 character varying(200),
+    words2 character varying(200),
+    words3 character varying(200),
+    operator character varying(20),
+    word_order smallint
+);
+
+
+ALTER TABLE public.words OWNER TO postgres;
+
+--
+-- TOC entry 192 (class 1259 OID 43251)
+-- Name: words_no_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE words_no_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.words_no_seq OWNER TO postgres;
+
+--
+-- TOC entry 2134 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: words_no_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE words_no_seq OWNED BY words.no;
+
+
+--
+-- TOC entry 1913 (class 2604 OID 43763)
+-- Name: diag_no; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY diag ALTER COLUMN diag_no SET DEFAULT nextval('diag_diag_no_seq'::regclass);
+
+
+--
+-- TOC entry 1915 (class 2604 OID 43764)
+-- Name: exam_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam ALTER COLUMN exam_id SET DEFAULT nextval('exam_exam_id_seq'::regclass);
+
+
+--
+-- TOC entry 1917 (class 2604 OID 43765)
+-- Name: no; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY words ALTER COLUMN no SET DEFAULT nextval('words_no_seq'::regclass);
+
+
+--
+-- TOC entry 2079 (class 0 OID 43157)
+-- Dependencies: 170
+-- Data for Name: db_version; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY db_version (db_version) FROM stdin;
+1.03
+\.
+
+
+--
+-- TOC entry 2080 (class 0 OID 43160)
+-- Dependencies: 171
+-- Data for Name: default_findings; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY default_findings (exam_type, findings) FROM stdin;
+4	\N
+5	\N
+100	\N
+1001	\N
+1002	\N
+1003	\N
+1004	\N
+1005	\N
+1006	\N
+1007	\N
+1008	\N
+1009	\N
+1010	\N
+1011	\N
+1012	\N
+2	前処置トラブル：なし\r\nT.I.まで挿入\r\n１年後再検指示
+3	test
+1	前処置トラブル：なし\r\n2nd portionまで挿入\r\nBulb：\r\nStomach：\r\nEsophagus：\r\n１年後再検指示
+\.
+
+
+--
+-- TOC entry 2081 (class 0 OID 43166)
+-- Dependencies: 172
+-- Data for Name: department; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY department (code, name1, name2, dp_visible, dp_order) FROM stdin;
+1	内科	internal medicine	t	1
+2	外科	surgery	t	2
+\.
+
+
+--
+-- TOC entry 2082 (class 0 OID 43170)
+-- Dependencies: 173
+-- Data for Name: diag; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY diag (diag_no, exam_no, diag_code, suspect, location, locate_str_after_diag) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2083 (class 0 OID 43173)
+-- Dependencies: 174
+-- Data for Name: diag_category; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY diag_category (id, start_no, end_no, name_eng, name_jp, bt_order, visible, name_ar, name_bg, name_hr, name_cs, name_da, name_nl, name_et, name_fi, name_fr, name_de, name_el, name_he, name_hu, name_it, name_ko, name_lv, name_lt, name_no, name_pl, name_pt_br, name_pt_pt, name_ro, name_ru, name_sr, name_han_s, name_sk, name_sl, name_es, name_sv, name_th, name_han_t, name_tr, name_uk) FROM stdin;
+1000	1000	1000	Laryngopharynx	咽喉頭	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1001	1000	1999	Laryngopharynx	咽喉頭	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2000	2000	2000	Esophagus	食道	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2001	2000	2999	Inflammation	炎症	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3000	3000	3999	Tumor	腫瘍	2	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4000	4000	4999	Other	その他	3	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5000	5000	5000	Stomach	胃	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5001	5000	5999	Inflammation	炎症	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6000	6000	6999	Tumor	腫瘍	2	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7000	7000	7999	Other	その他	3	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10000	10000	10000	Duodenum	十二指腸	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10001	10000	10999	Duodenum	十二指腸	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20000	20000	20999	Side View	側視鏡	2	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30000	30000	30000	Small bowel	小腸	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30001	30000	39999	Small bowel	小腸	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40000	40000	40000	Colon	大腸	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40001	40000	49999	Inflammation	炎症	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50000	50000	59999	Tumor	腫瘍	2	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60000	60000	69999	Other	その他	3	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70000	70000	70000	Anus	肛門	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70001	70000	79999	Anus	肛門	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+100000	100000	100000	Procedure	手技	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+100001	100000	109999	Procedure	手技	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+200000	200000	200000	Study	研究	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+200001	200000	299999	Study	研究	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+300000	300000	300000	Broncho	気管支鏡	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+300001	399999	399999	Broncho	気管支鏡	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 2136 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: diag_diag_no_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('diag_diag_no_seq', 45, true);
+
+
+--
+-- TOC entry 2085 (class 0 OID 43181)
+-- Dependencies: 176
+-- Data for Name: diag_name; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY diag_name (no, name_eng, name_jp, diag_order, diag_visible, name_ar, name_bg, name_hr, name_cs, name_da, name_nl, name_et, name_fi, name_fr, name_de, name_el, name_he, name_hu, name_it, name_ko, name_lv, name_lt, name_no, name_pl, name_pt_br, name_pt_pt, name_ro, name_ru, name_sr, name_han_s, name_sk, name_sl, name_es, name_sv, name_th, name_han_t, name_tr, name_uk) FROM stdin;
+2050	\N	GERD(LA grade C)	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2060	\N	GERD(LA grade D)	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2070	\N	バレット食道	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2080	\N	食道の原因不明の出血	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2090	\N	食道潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2100	\N	食道瘢痕	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2110	\N	食道治療後潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2120	\N	食道治療後瘢痕	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2130	\N	Mallory-Weiss syndrome	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2140	\N	食道びらん	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2150	\N	非逆流性食道炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2160	\N	カンジダ性食道炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2170	\N	サイトメガロウイルス食道炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2180	\N	ヘルペスウイルス食道炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2190	\N	腐蝕性食道炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2200	\N	食道クローン病	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2210	\N	進行性全身性硬化症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3010	\N	食道ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3020	\N	食道乳頭腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3030	\N	dysplasia	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3040	\N	食道表在癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3050	\N	壁内転移性癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3060	\N	食道進行癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3070	\N	食道粘膜切除後癌遺残	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3080	\N	食道粘膜切除後再発癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3090	\N	転移性食道癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3100	\N	食道悪性黒色腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3110	\N	食道粘膜下腫瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3120	\N	食道悪性リンパ腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4010	\N	食道壁外性圧迫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4020	\N	食道裂孔ヘルニア	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4030	\N	食道異物	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4040	\N	食道憩室	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4050	\N	食道静脈瘤	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4060	\N	静脈瘤治療後潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4070	\N	静脈瘤治療後瘢痕	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4080	\N	グリコーゲン・アカントーシス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4090	\N	食道異所性胃粘膜	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4100	\N	食道メラノーシス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4110	\N	食道血腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4120	\N	食道術後	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4130	\N	食道全摘後	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4140	\N	食道良性狭窄	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4150	\N	食道web	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4160	\N	食道アカラシア	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4170	\N	食道瘻孔	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4180	\N	特発性食道破裂	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5010	\N	胃粘膜萎縮（萎縮性胃炎）	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5020	\N	びらん性胃炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5030	\N	発赤胃炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5040	\N	肥厚性胃炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5050	\N	出血性胃炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5060	\N	門脈圧亢進に伴う胃炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5070	\N	好酸球性胃炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5080	\N	胃の原因不明の出血	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5090	\N	胃潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5100	\N	胃潰瘍瘢痕	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5110	\N	出血性胃潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5120	\N	胃Dieulafoy潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5130	\N	NSAID起因性潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5140	\N	急性胃粘膜病変	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5150	\N	急性胃十二指腸粘膜病変	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5160	\N	胃吻合部潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5170	\N	胃治療後潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5180	\N	胃治療後瘢痕	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5190	\N	胃アミロイドーシス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5200	\N	胃サルコイドーシス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5210	\N	胃梅毒	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5220	\N	Menetrier病	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6010	\N	胃ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6020	\N	胃底腺ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6030	\N	胃炎症性ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6040	\N	胃過形成性ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6050	\N	胃腺腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6060	\N	胃過誤腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6070	\N	胃炎症性線維性ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6080	\N	胃黄色腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6090	\N	胃早期癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6100	\N	胃進行癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6110	\N	転移性胃癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6115	\N	残胃癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6120	\N	胃粘膜切除後癌遺残	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6130	\N	胃粘膜切除後再発癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6140	\N	胃粘膜下腫瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6145	\N	胃カルチノイド	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6150	\N	胃GIST	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6160	\N	胃平滑筋腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6170	\N	胃嚢胞	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6180	\N	胃異所性膵組織	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6190	\N	胃悪性リンパ腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6200	\N	胃MALTリンパ腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6210	\N	胃脂肪腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6220	\N	胃ポリポーシス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6230	\N	Cronkhite-Canada症候群	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6240	\N	Peutz-Jeghers症候群	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6250	\N	Cowden病	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7010	\N	Helicobacter pylori	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7020	\N	RUT陽性	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7030	\N	RUT陰性	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7040	\N	胃術後	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7050	\N	胃全摘後	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7060	\N	胃亜全摘後	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7070	\N	B-I吻合	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7080	\N	B-II吻合	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7085	\N	Roux-en-Y法術後	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7090	\N	胃壁外性圧迫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7100	\N	胃静脈瘤	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7110	\N	胃血管拡張症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7120	\N	胃の狭窄	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7130	\N	胃瘻孔	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7140	\N	胃寄生虫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7150	\N	胃アニサキス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7160	\N	胃の異物	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7170	\N	胃石	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7180	\N	胃排出障害	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10010	\N	十二指腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10020	\N	十二指腸潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10030	\N	出血性十二指腸潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010	\N	喉頭ポリープ	1010	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1020	\N	喉頭癌	1020	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030	\N	白斑症	1030	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050	\N	下咽頭癌	1050	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060	\N	声帯嚢胞	1060	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2010	\N	逆流性食道炎	2010	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2020	\N	GERD(LA grade M)	2020	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2040	\N	GERD(LA grade B)	2040	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10040	\N	十二指腸瘢痕	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10050	\N	十二指腸潰瘍による変形	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10060	\N	クローン病（十二指腸）	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10070	\N	十二指腸原因不明の出血	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10080	\N	十二指腸血管拡張症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10090	\N	十二指腸ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10100	\N	十二指腸腺腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10110	\N	十二指腸癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10120	\N	十二指腸粘膜下腫瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10130	\N	Brunner's腺過形成	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10140	\N	十二指腸嚢胞	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10150	\N	十二指腸リンパ管腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10160	\N	十二指腸壁外性圧迫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10170	\N	十二指腸憩室	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10180	\N	十二指腸瘻孔	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10190	\N	十二指腸寄生虫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+10200	\N	十二指腸術後	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20010	\N	乳頭ステント	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20020	\N	乳頭ドレイン	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20030	\N	乳頭狭窄	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20040	\N	乳頭開大	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20050	\N	乳頭腫大	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20060	\N	乳頭欝血	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20070	\N	乳頭裂傷	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20080	\N	乳頭腫瘤	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20090	\N	乳頭切開後	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20100	\N	乳頭拡張術後	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20110	\N	乳頭発赤	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20120	\N	傍乳頭憩室	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20130	\N	胆管瘻	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20140	\N	乳頭異物	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30010	\N	小腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30020	\N	小腸潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30030	\N	非特異性多発性小腸潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30040	\N	小腸の原因不明の出血	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30050	\N	小腸angiectasia	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30060	\N	小腸ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30070	\N	小腸癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30080	\N	小腸粘膜下腫瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30090	\N	小腸壁外性圧迫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30100	\N	メッケル憩室	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+30110	\N	小腸狭窄	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40010	\N	大腸治療後潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40020	\N	大腸治療後瘢痕	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40030	\N	大腸NSAID潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40040	\N	大腸Dieulafoy潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40050	\N	非特異性腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40060	\N	潰瘍性大腸炎 寛解期	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40070	\N	潰瘍性大腸炎 活動性	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40080	\N	中毒性巨大結腸症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40090	\N	クローン病（大腸）	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40100	\N	単純性潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40110	\N	Beｈ?et病	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40120	\N	虚血性大腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40130	\N	出血性大腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40140	\N	大腸憩室炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40150	\N	放射線性腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40160	\N	腸管膜脂肪織炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40170	\N	虫垂炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40180	\N	感染性腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40190	\N	大腸結核	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40195	\N	陳旧性大腸結核	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40200	\N	出血性大腸菌腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40210	\N	偽膜性大腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40220	\N	カンピロバクター腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40230	\N	腸炎ビブリオ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40240	\N	サルモネラ腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40250	\N	ブドウ球菌腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40260	\N	MRSA腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40270	\N	大腸カンジダ症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40280	\N	腸チフス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40290	\N	アメーバ腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40300	\N	サイトメガロ腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40310	\N	深在嚢胞性大腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40320	\N	好酸球性腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40330	\N	結節性動脈硬化症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40340	\N	SLE	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40350	\N	Schonlein-Henoch紫斑病	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+40360	\N	collagenous colitis	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50010	\N	大腸ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50040	\N	大腸過形成性ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50050	\N	大腸腺腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50060	\N	大腸serrated adenoma	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50070	\N	大腸mucosal polyp	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50080	\N	大腸若年性ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50090	\N	大腸dysplasia	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50100	\N	大腸早期癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50110	\N	大腸進行癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50120	\N	大腸癌(術後)再発	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50130	\N	大腸癌吻合部再発	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50140	\N	転移性大腸癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50150	\N	虫垂粘液嚢胞腺腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50160	\N	虫垂粘液嚢胞腺癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50170	\N	大腸粘膜下腫瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50180	\N	大腸カルチノイド	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50190	\N	大腸悪性リンパ腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50200	\N	大腸MALTリンパ腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50210	\N	大腸脂肪腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50220	\N	大腸リンパ管腫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50230	\N	嚢胞状大腸気腫症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50240	\N	大腸ポリポーシス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50250	\N	FAP	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50260	\N	NPHCC	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50270	\N	Cronkhite-Canada症候群	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50280	\N	Peutz-Jeghers症候群	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50290	\N	Cowden病	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+50300	\N	cap polyposis	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60010	\N	過敏性腸症候群	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60020	\N	大腸憩室症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60030	\N	大腸憩室出血	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60040	\N	大腸メラノーシス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60050	\N	大腸の原因不明の出血	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60060	\N	大腸angiectasia	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60070	\N	大腸動静脈奇形	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60080	\N	大腸静脈硬化症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60090	\N	大腸静脈瘤	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60100	\N	大腸腸間膜動脈血栓症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60110	\N	大腸術後	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60120	\N	大腸術後狭窄	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60130	\N	大腸壁外性圧迫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60140	\N	子宮癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60150	\N	卵巣癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60160	\N	イレウス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60170	\N	腸重積	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60180	\N	S状結腸軸捻転	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60190	\N	大腸瘻孔	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60200	\N	大腸アニサキス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60210	\N	大腸条虫症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60220	\N	大腸糞腺虫	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60230	\N	大腸日本住血吸虫症	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60240	\N	大腸切除後症候群	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60250	\N	大腸アミロイドーシス	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60260	\N	大腸異物	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60270	\N	糞石	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+60280	\N	大腸狭窄	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70010	\N	痔核	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70020	\N	痔瘻	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70030	\N	裂孔	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70040	\N	肛門ポリープ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70050	\N	肛門管癌	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70060	\N	直腸脱	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70070	\N	直腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70080	\N	出血性直腸潰瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70090	\N	放射線性直腸炎	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70100	\N	大腸粘膜逸脱症候群	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70110	\N	大腸コンディロマ	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70120	\N	直腸静脈瘤	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70130	\N	肛門周囲膿瘍	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+70140	\N	直腸狭窄	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+100000	\N	EUS	20	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+100010	\N	ESD	30	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+100020	\N	詳細不明	10	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+100030	\N	胃瘻造設	40	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+100040	\N	未施行	15	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20150	Other(Side view)	その他（側視鏡）	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040	\N	喉頭炎	1040	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2030	\N	GERD(LA grade A)	2030	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+0	Normal	正常	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 2086 (class 0 OID 43187)
+-- Dependencies: 177
+-- Data for Name: equipment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY equipment (equipment_no, name, equipment_type, gf_order, cf_order, sv_order, s_order, us_order, scope, us, equipment_visible, b_order) FROM stdin;
+1	testGF	1	1	1	1	1	\N	t	\N	t	\N
+\.
+
+
+--
+-- TOC entry 2087 (class 0 OID 43191)
+-- Dependencies: 178
+-- Data for Name: equipment_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY equipment_type (type_no, name, type_order, type_visible) FROM stdin;
+1	GF	1	t
+2	CF	2	t
+3	Side View	3	t
+4	SmallBowel	4	t
+99	US	99	t
+5	Capsule	5	t
+50	Broncho	50	t
+\.
+
+
+--
+-- TOC entry 2088 (class 0 OID 43194)
+-- Dependencies: 179
+-- Data for Name: exam; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY exam (exam_id, pt_id, purpose, department, order_dr, ward_id, exam_day, exam_type, pathology, patho_no, reply_patho, operator1, operator2, operator3, operator4, operator5, diag_dr, final_diag_dr, equipment, place_no, findings, comment, exam_status, explanation, lock_time, terminal_ip, exam_visible) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2137 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: exam_exam_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('exam_exam_id_seq', 68, true);
+
+
+--
+-- TOC entry 2090 (class 0 OID 43202)
+-- Dependencies: 181
+-- Data for Name: exam_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY exam_type (type_no, name_eng, name_jp, type_order, type_visible, name_ar, name_bg, name_hr, name_cs, name_da, name_nl, name_et, name_fi, name_fr, name_de, name_el, name_he, name_hu, name_it, name_ko, name_lv, name_lt, name_no, name_pl, name_pt_br, name_pt_pt, name_ro, name_ru, name_sr, name_han_s, name_sk, name_sl, name_es, name_sv, name_th, name_han_t, name_tr, name_uk) FROM stdin;
+1005	Cardiac US	心エコー	1005	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1004	Breast US	乳腺エコー	1004	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1003	Carotid US	頸動脈エコー	1003	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1002	Thyroid US	甲状腺エコー	1002	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1001	Abdomen US	腹部エコー	1001	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1006	Obstetric US	産科エコー	1006	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1007	Cranial US	頭部エコー	1007	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1008	Musculoskeletal US	筋骨格エコー	1008	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1009	Pelvic US	骨盤エコー	1009	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010	Urology US	泌尿器エコー	1010	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1011	Vascular US	血管エコー	1011	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1012	Skin US	表在エコー	1012	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1	GF	GF	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2	CF	CF	2	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4	Baloon	Baloon	4	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5	Capsule	カプセル内視鏡	5	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3	SideView	側視鏡	3	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+100	Broncho	気管支鏡	100	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 2091 (class 0 OID 43208)
+-- Dependencies: 182
+-- Data for Name: explanation; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY explanation (no, explanation_status, status_order, status_visible) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2092 (class 0 OID 43211)
+-- Dependencies: 183
+-- Data for Name: group_no; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY group_no (no, group_name, group_order, group_visible) FROM stdin;
+10	Group 1	1	t
+20	Group 2	2	t
+30	Group 3	3	t
+40	Group 4	4	t
+50	Group 5	5	t
+\.
+
+
+--
+-- TOC entry 2093 (class 0 OID 43214)
+-- Dependencies: 184
+-- Data for Name: op_category; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY op_category (opc_no, opc_name, opc_visible, opc_order, can_diag) FROM stdin;
+1	Doctor	t	1	t
+99	Viewer	t	99	f
+\.
+
+
+--
+-- TOC entry 2094 (class 0 OID 43217)
+-- Dependencies: 185
+-- Data for Name: operator; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY operator (operator_id, op_name, op_order, department, pw, admin_op, op_category, lock_time, terminal_ip, op_visible, allow_fc) FROM stdin;
+test	test	1	1	test	t	1	\N	\N	t	t
+\.
+
+
+--
+-- TOC entry 2095 (class 0 OID 43220)
+-- Dependencies: 186
+-- Data for Name: patho_diag; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY patho_diag (diag_no, exam_no, group_no, diagnosis) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2096 (class 0 OID 43226)
+-- Dependencies: 187
+-- Data for Name: patient; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY patient (pt_id, pt_name, birthday, gender, pt_memo, lock_time, terminal_ip) FROM stdin;
+1001	テスト花子	1948-10-15	0	\N	\N	\N
+1000	test太郎	2014-06-11	1		\N	\N
+\.
+
+
+--
+-- TOC entry 2097 (class 0 OID 43232)
+-- Dependencies: 188
+-- Data for Name: place; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY place (place_no, name1, name2, place_order_endo, place_order_us, place_visible) FROM stdin;
+1	内視鏡室	\N	\N	\N	t
+2	透視室	\N	\N	\N	f
+\.
+
+
+--
+-- TOC entry 2098 (class 0 OID 43236)
+-- Dependencies: 189
+-- Data for Name: status; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY status (status_no, name_eng, name_jp, status_order, status_visible, name_ar, name_bg, name_hr, name_cs, name_da, name_nl, name_et, name_fi, name_fr, name_de, name_el, name_he, name_hu, name_it, name_ko, name_lv, name_lt, name_no, name_pl, name_pt_br, name_pt_pt, name_ro, name_ru, name_sr, name_han_s, name_sk, name_sl, name_es, name_sv, name_th, name_han_t, name_tr, name_uk) FROM stdin;
+3	Checked	２次	3	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2	Done	１次	2	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+9	Canceled	未実施	9	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1	Draft	草稿	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+0	Blank	未記入	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 2099 (class 0 OID 43242)
+-- Dependencies: 190
+-- Data for Name: ward; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY ward (ward_no, ward, ward_order, ward_visible) FROM stdin;
+1	外来	1	t
+\.
+
+
+--
+-- TOC entry 2100 (class 0 OID 43245)
+-- Dependencies: 191
+-- Data for Name: words; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY words (no, words1, words2, words3, operator, word_order) FROM stdin;
+2	antrumはatrophic。	粘膜粗造	凹凸	Upper endoscopy	2
+1	n.p.	2nd portionまで挿入\r\nBulb：\r\nStomach：\r\nEsophagus：	前処置トラブル：なし	Upper endoscopy	1
+26	１年後再検指示。	２～３年後再検指示。	３か月後再検指示。	Colonoscopy	6
+25	Isp polypあり、	Ip polypあり、	+ clip 個。	Colonoscopy	5
+24	反転でhemoなし。	Isp polypあり、	Ip polypあり、	Colonoscopy	3
+23	mmの	Ⅱa polypあり、	Is polypあり、	Colonoscopy	4
+22	S/C long。	たわみのため、Cecumまでの挿入	反転でhemoあり。	Colonoscopy	2
+21	n.p.	前処置トラブル：なし	T.I.: n.p.	Colonoscopy	1
+19	unknown	詳細不明	\N	Upper endoscopy	19
+6	cardia	全周に	前壁に	Upper endoscopy	6
+7	後壁に	小弯に	大弯に	Upper endoscopy	7
+8	clot	タコイボびらん	線状発赤	Upper endoscopy	8
+9	あり	散在	多発	Upper endoscopy	9
+10	A1 stageのopen ulcerあり	A2 stageのopen ulcerあり	H1 stageのopen ulcerあり	Upper endoscopy	10
+11	H2 stageのopen ulcerあり	S1 stageのscarあり	S2 stageのscarあり	Upper endoscopy	11
+12	mmの	同色性	発赤	Upper endoscopy	12
+13	Y-1 polyp	Y-2 polyp	Y-3 polyp	Upper endoscopy	13
+14	陥凹	隆起	結節状	Upper endoscopy	14
+15	食道下端に	門歯よりcmに	\N	Upper endoscopy	15
+16	バレット上皮	GERD	\N	Upper endoscopy	16
+17	(LA grade M)	(LA grade A)	(LA grade B)	Upper endoscopy	17
+18	(LA grade C)	(LA grade D)	\N	Upper endoscopy	18
+5	fornix	cardia	\N	Upper endoscopy	5
+4	体下部	体中部	体上部	Upper endoscopy	4
+3	prepylorus	antrum	胃角	Upper endoscopy	3
+\.
+
+
+--
+-- TOC entry 2138 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: words_no_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('words_no_seq', 30, true);
+
+
+--
+-- TOC entry 1919 (class 2606 OID 43652)
+-- Name: db_version_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY db_version
+    ADD CONSTRAINT db_version_pkey PRIMARY KEY (db_version);
+
+
+--
+-- TOC entry 1921 (class 2606 OID 43654)
+-- Name: default_findings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY default_findings
+    ADD CONSTRAINT default_findings_pkey PRIMARY KEY (exam_type);
+
+
+--
+-- TOC entry 1923 (class 2606 OID 43656)
+-- Name: department_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY department
+    ADD CONSTRAINT department_pkey PRIMARY KEY (code);
+
+
+--
+-- TOC entry 1927 (class 2606 OID 43658)
+-- Name: diag_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY diag_category
+    ADD CONSTRAINT diag_category_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1929 (class 2606 OID 43660)
+-- Name: diag_name_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY diag_name
+    ADD CONSTRAINT diag_name_pkey PRIMARY KEY (no);
+
+
+--
+-- TOC entry 1925 (class 2606 OID 43662)
+-- Name: diag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY diag
+    ADD CONSTRAINT diag_pkey PRIMARY KEY (diag_no);
+
+
+--
+-- TOC entry 1933 (class 2606 OID 43664)
+-- Name: equipment_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY equipment_type
+    ADD CONSTRAINT equipment_type_pkey PRIMARY KEY (type_no);
+
+
+--
+-- TOC entry 1935 (class 2606 OID 43666)
+-- Name: exam_pkey1; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT exam_pkey1 PRIMARY KEY (exam_id);
+
+
+--
+-- TOC entry 1937 (class 2606 OID 43668)
+-- Name: exam_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY exam_type
+    ADD CONSTRAINT exam_type_pkey PRIMARY KEY (type_no);
+
+
+--
+-- TOC entry 1939 (class 2606 OID 43670)
+-- Name: explanation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY explanation
+    ADD CONSTRAINT explanation_pkey PRIMARY KEY (no);
+
+
+--
+-- TOC entry 1941 (class 2606 OID 43672)
+-- Name: group_no_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY group_no
+    ADD CONSTRAINT group_no_pkey PRIMARY KEY (no);
+
+
+--
+-- TOC entry 1943 (class 2606 OID 43674)
+-- Name: op_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY op_category
+    ADD CONSTRAINT op_category_pkey PRIMARY KEY (opc_no);
+
+
+--
+-- TOC entry 1945 (class 2606 OID 43676)
+-- Name: operator_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY operator
+    ADD CONSTRAINT operator_pkey PRIMARY KEY (operator_id);
+
+
+--
+-- TOC entry 1947 (class 2606 OID 43678)
+-- Name: patho_diag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY patho_diag
+    ADD CONSTRAINT patho_diag_pkey PRIMARY KEY (diag_no);
+
+
+--
+-- TOC entry 1949 (class 2606 OID 43680)
+-- Name: patient_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY patient
+    ADD CONSTRAINT patient_pkey PRIMARY KEY (pt_id);
+
+
+--
+-- TOC entry 1951 (class 2606 OID 43682)
+-- Name: room_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY place
+    ADD CONSTRAINT room_pkey PRIMARY KEY (place_no);
+
+
+--
+-- TOC entry 1931 (class 2606 OID 43684)
+-- Name: scope_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY equipment
+    ADD CONSTRAINT scope_pkey PRIMARY KEY (equipment_no);
+
+
+--
+-- TOC entry 1953 (class 2606 OID 43686)
+-- Name: status_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY status
+    ADD CONSTRAINT status_pkey PRIMARY KEY (status_no);
+
+
+--
+-- TOC entry 1955 (class 2606 OID 43688)
+-- Name: ward_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ward
+    ADD CONSTRAINT ward_pkey PRIMARY KEY (ward_no);
+
+
+--
+-- TOC entry 1957 (class 2606 OID 43690)
+-- Name: words_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY words
+    ADD CONSTRAINT words_pkey PRIMARY KEY (no);
+
+
+--
+-- TOC entry 1961 (class 2606 OID 43691)
+-- Name: department; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT department FOREIGN KEY (department) REFERENCES department(code);
+
+
+--
+-- TOC entry 1971 (class 2606 OID 43696)
+-- Name: department; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY operator
+    ADD CONSTRAINT department FOREIGN KEY (department) REFERENCES department(code);
+
+
+--
+-- TOC entry 1958 (class 2606 OID 43701)
+-- Name: diag_name; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY diag
+    ADD CONSTRAINT diag_name FOREIGN KEY (diag_code) REFERENCES diag_name(no);
+
+
+--
+-- TOC entry 1962 (class 2606 OID 43706)
+-- Name: equipment; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT equipment FOREIGN KEY (equipment) REFERENCES equipment(equipment_no);
+
+
+--
+-- TOC entry 1960 (class 2606 OID 43711)
+-- Name: equipment_type; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY equipment
+    ADD CONSTRAINT equipment_type FOREIGN KEY (equipment_type) REFERENCES equipment_type(type_no);
+
+
+--
+-- TOC entry 1959 (class 2606 OID 43716)
+-- Name: exam; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY diag
+    ADD CONSTRAINT exam FOREIGN KEY (exam_no) REFERENCES exam(exam_id);
+
+
+--
+-- TOC entry 1963 (class 2606 OID 43721)
+-- Name: exam_type; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT exam_type FOREIGN KEY (exam_type) REFERENCES equipment_type(type_no);
+
+
+--
+-- TOC entry 1964 (class 2606 OID 43726)
+-- Name: operator1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT operator1 FOREIGN KEY (operator1) REFERENCES operator(operator_id);
+
+
+--
+-- TOC entry 1965 (class 2606 OID 43731)
+-- Name: operator2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT operator2 FOREIGN KEY (operator2) REFERENCES operator(operator_id);
+
+
+--
+-- TOC entry 1966 (class 2606 OID 43736)
+-- Name: operator3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT operator3 FOREIGN KEY (operator3) REFERENCES operator(operator_id);
+
+
+--
+-- TOC entry 1967 (class 2606 OID 43741)
+-- Name: operator4; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT operator4 FOREIGN KEY (operator4) REFERENCES operator(operator_id);
+
+
+--
+-- TOC entry 1968 (class 2606 OID 43746)
+-- Name: operator5; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT operator5 FOREIGN KEY (operator5) REFERENCES operator(operator_id);
+
+
+--
+-- TOC entry 1969 (class 2606 OID 43751)
+-- Name: place; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT place FOREIGN KEY (place_no) REFERENCES place(place_no);
+
+
+--
+-- TOC entry 1970 (class 2606 OID 43756)
+-- Name: ward; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT ward FOREIGN KEY (ward_id) REFERENCES ward(ward_no);
+
+
+--
+-- TOC entry 2108 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- TOC entry 2110 (class 0 OID 0)
+-- Dependencies: 170
+-- Name: db_version; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE db_version FROM PUBLIC;
+REVOKE ALL ON TABLE db_version FROM postgres;
+GRANT ALL ON TABLE db_version TO postgres;
+GRANT SELECT ON TABLE db_version TO db_users;
+
+
+--
+-- TOC entry 2111 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: default_findings; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE default_findings FROM PUBLIC;
+REVOKE ALL ON TABLE default_findings FROM postgres;
+GRANT ALL ON TABLE default_findings TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE default_findings TO db_users;
+
+
+--
+-- TOC entry 2112 (class 0 OID 0)
+-- Dependencies: 172
+-- Name: department; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE department FROM PUBLIC;
+REVOKE ALL ON TABLE department FROM postgres;
+GRANT ALL ON TABLE department TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE department TO db_users;
+
+
+--
+-- TOC entry 2113 (class 0 OID 0)
+-- Dependencies: 173
+-- Name: diag; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE diag FROM PUBLIC;
+REVOKE ALL ON TABLE diag FROM postgres;
+GRANT ALL ON TABLE diag TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE diag TO db_users;
+
+
+--
+-- TOC entry 2114 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: diag_category; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE diag_category FROM PUBLIC;
+REVOKE ALL ON TABLE diag_category FROM postgres;
+GRANT ALL ON TABLE diag_category TO postgres;
+GRANT SELECT ON TABLE diag_category TO db_users;
+
+
+--
+-- TOC entry 2116 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: diag_diag_no_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE diag_diag_no_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE diag_diag_no_seq FROM postgres;
+GRANT ALL ON SEQUENCE diag_diag_no_seq TO postgres;
+GRANT ALL ON SEQUENCE diag_diag_no_seq TO db_users;
+
+
+--
+-- TOC entry 2117 (class 0 OID 0)
+-- Dependencies: 176
+-- Name: diag_name; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE diag_name FROM PUBLIC;
+REVOKE ALL ON TABLE diag_name FROM postgres;
+GRANT ALL ON TABLE diag_name TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE diag_name TO db_users;
+
+
+--
+-- TOC entry 2118 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: equipment; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE equipment FROM PUBLIC;
+REVOKE ALL ON TABLE equipment FROM postgres;
+GRANT ALL ON TABLE equipment TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE equipment TO db_users;
+
+
+--
+-- TOC entry 2119 (class 0 OID 0)
+-- Dependencies: 178
+-- Name: equipment_type; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE equipment_type FROM PUBLIC;
+REVOKE ALL ON TABLE equipment_type FROM postgres;
+GRANT ALL ON TABLE equipment_type TO postgres;
+GRANT SELECT,UPDATE ON TABLE equipment_type TO db_users;
+
+
+--
+-- TOC entry 2120 (class 0 OID 0)
+-- Dependencies: 179
+-- Name: exam; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE exam FROM PUBLIC;
+REVOKE ALL ON TABLE exam FROM postgres;
+GRANT ALL ON TABLE exam TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE exam TO db_users;
+
+
+--
+-- TOC entry 2122 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: exam_exam_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE exam_exam_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE exam_exam_id_seq FROM postgres;
+GRANT ALL ON SEQUENCE exam_exam_id_seq TO postgres;
+GRANT ALL ON SEQUENCE exam_exam_id_seq TO db_users;
+
+
+--
+-- TOC entry 2123 (class 0 OID 0)
+-- Dependencies: 181
+-- Name: exam_type; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE exam_type FROM PUBLIC;
+REVOKE ALL ON TABLE exam_type FROM postgres;
+GRANT ALL ON TABLE exam_type TO postgres;
+GRANT SELECT,UPDATE ON TABLE exam_type TO db_users;
+
+
+--
+-- TOC entry 2124 (class 0 OID 0)
+-- Dependencies: 182
+-- Name: explanation; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE explanation FROM PUBLIC;
+REVOKE ALL ON TABLE explanation FROM postgres;
+GRANT ALL ON TABLE explanation TO postgres;
+GRANT SELECT ON TABLE explanation TO db_users;
+
+
+--
+-- TOC entry 2125 (class 0 OID 0)
+-- Dependencies: 183
+-- Name: group_no; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE group_no FROM PUBLIC;
+REVOKE ALL ON TABLE group_no FROM postgres;
+GRANT ALL ON TABLE group_no TO postgres;
+GRANT SELECT ON TABLE group_no TO db_users;
+
+
+--
+-- TOC entry 2126 (class 0 OID 0)
+-- Dependencies: 184
+-- Name: op_category; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE op_category FROM PUBLIC;
+REVOKE ALL ON TABLE op_category FROM postgres;
+GRANT ALL ON TABLE op_category TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE op_category TO db_users;
+
+
+--
+-- TOC entry 2127 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: operator; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE operator FROM PUBLIC;
+REVOKE ALL ON TABLE operator FROM postgres;
+GRANT ALL ON TABLE operator TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE operator TO db_users;
+
+
+--
+-- TOC entry 2128 (class 0 OID 0)
+-- Dependencies: 186
+-- Name: patho_diag; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE patho_diag FROM PUBLIC;
+REVOKE ALL ON TABLE patho_diag FROM postgres;
+GRANT ALL ON TABLE patho_diag TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE patho_diag TO db_users;
+
+
+--
+-- TOC entry 2129 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: patient; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE patient FROM PUBLIC;
+REVOKE ALL ON TABLE patient FROM postgres;
+GRANT ALL ON TABLE patient TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE patient TO db_users;
+
+
+--
+-- TOC entry 2130 (class 0 OID 0)
+-- Dependencies: 188
+-- Name: place; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE place FROM PUBLIC;
+REVOKE ALL ON TABLE place FROM postgres;
+GRANT ALL ON TABLE place TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE place TO db_users;
+
+
+--
+-- TOC entry 2131 (class 0 OID 0)
+-- Dependencies: 189
+-- Name: status; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE status FROM PUBLIC;
+REVOKE ALL ON TABLE status FROM postgres;
+GRANT ALL ON TABLE status TO postgres;
+GRANT SELECT ON TABLE status TO db_users;
+
+
+--
+-- TOC entry 2132 (class 0 OID 0)
+-- Dependencies: 190
+-- Name: ward; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE ward FROM PUBLIC;
+REVOKE ALL ON TABLE ward FROM postgres;
+GRANT ALL ON TABLE ward TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE ward TO db_users;
+
+
+--
+-- TOC entry 2133 (class 0 OID 0)
+-- Dependencies: 191
+-- Name: words; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE words FROM PUBLIC;
+REVOKE ALL ON TABLE words FROM postgres;
+GRANT ALL ON TABLE words TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE words TO db_users;
+
+
+--
+-- TOC entry 2135 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: words_no_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE words_no_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE words_no_seq FROM postgres;
+GRANT ALL ON SEQUENCE words_no_seq TO postgres;
+GRANT ALL ON SEQUENCE words_no_seq TO db_users;
+
+
+-- Completed on 2014-07-02 13:46:36
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect postgres
+
+SET default_transaction_read_only = off;
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.4
+-- Dumped by pg_dump version 9.3.4
+-- Started on 2014-07-02 13:46:36
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 1930 (class 1262 OID 12029)
+-- Dependencies: 1929
+-- Name: postgres; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE postgres IS 'default administrative connection database';
+
+
+--
+-- TOC entry 171 (class 3079 OID 11750)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1933 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- TOC entry 170 (class 3079 OID 16384)
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1934 (class 0 OID 0)
+-- Dependencies: 170
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
+
+
+--
+-- TOC entry 1932 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2014-07-02 13:46:37
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect template1
+
+SET default_transaction_read_only = off;
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.4
+-- Dumped by pg_dump version 9.3.4
+-- Started on 2014-07-02 13:46:37
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 1929 (class 1262 OID 1)
+-- Dependencies: 1928
+-- Name: template1; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE template1 IS 'default template database';
+
+
+--
+-- TOC entry 170 (class 3079 OID 11750)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1932 (class 0 OID 0)
+-- Dependencies: 170
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- TOC entry 1931 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2014-07-02 13:46:37
+
+--
+-- PostgreSQL database dump complete
+--
+
+-- Completed on 2014-07-02 13:46:37
+
+--
+-- PostgreSQL database cluster dump complete
+--
+
