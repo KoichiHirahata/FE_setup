@@ -123,6 +123,9 @@
   <data name="btSetDbUserPw.Text" xml:space="preserve">
     <value>db_userパスワード設定</value>
   </data>
+  <data name="btRestore.Text" xml:space="preserve">
+    <value>リストア</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>所見入力システムセットアップ</value>
   </data>

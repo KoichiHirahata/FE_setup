@@ -1078,6 +1078,15 @@ namespace FE_setup.Properties {
         }
         
         /// <summary>
+        ///   Where is back up file you want to restore? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string WhereIsBackupFile {
+            get {
+                return ResourceManager.GetString("WhereIsBackupFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Where is psql.exe? に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string WhereIsPsql {

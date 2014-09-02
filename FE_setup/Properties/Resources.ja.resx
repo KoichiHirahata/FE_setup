@@ -468,4 +468,7 @@
   <data name="ProcedureFinished" xml:space="preserve">
     <value>処理が終了しました。</value>
   </data>
+  <data name="WhereIsBackupFile" xml:space="preserve">
+    <value>バックアップファイルを指定してください。</value>
+  </data>
 </root>

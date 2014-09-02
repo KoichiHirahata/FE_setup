@@ -34,6 +34,7 @@
             this.btSetDbUserPw = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.versionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btRestore = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,10 +73,18 @@
             resources.ApplyResources(this.versionToolStripMenuItem, "versionToolStripMenuItem");
             this.versionToolStripMenuItem.Click += new System.EventHandler(this.versionToolStripMenuItem_Click);
             // 
+            // btRestore
+            // 
+            resources.ApplyResources(this.btRestore, "btRestore");
+            this.btRestore.Name = "btRestore";
+            this.btRestore.UseVisualStyleBackColor = true;
+            this.btRestore.Click += new System.EventHandler(this.btRestore_Click);
+            // 
             // mainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btRestore);
             this.Controls.Add(this.btSetDbUserPw);
             this.Controls.Add(this.bt_do_sql);
             this.Controls.Add(this.btCreateEndoDB);
@@ -96,6 +105,7 @@
         private System.Windows.Forms.Button btSetDbUserPw;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem versionToolStripMenuItem;
+        private System.Windows.Forms.Button btRestore;
     }
 }
 
