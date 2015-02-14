@@ -108,7 +108,10 @@ namespace FE_setup
                         if (rst == functions.functionResult.failed)
                         { MessageBox.Show("[SQL: Line " + (i + 1).ToString() + "]" + Properties.Resources.DataBaseError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                         else if (rst == functions.functionResult.connectionError)
-                        { MessageBox.Show("[SQL: Line " + (i + 1).ToString() + "]" + Properties.Resources.ConnectFailed, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                        {
+                            MessageBox.Show("[SQL: Line " + (i + 1).ToString() + "]" + Properties.Resources.ConnectFailed, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
                     }
                     MessageBox.Show("[SQL File]" + Properties.Resources.ProcedureFinished, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -192,7 +195,7 @@ namespace FE_setup
             { backupPath = ofd.FileName; }
             else
             { return; }
-            
+
             if (File.Exists(backupPath))
             {
                 SetPort sp = new SetPort();
