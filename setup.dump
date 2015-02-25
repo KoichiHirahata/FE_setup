@@ -2,7 +2,7 @@
 -- PostgreSQL database cluster dump
 --
 
--- Started on 2014-07-02 13:46:34
+-- Started on 2015-02-26 02:04:04
 
 SET default_transaction_read_only = off;
 
@@ -17,6 +17,8 @@ CREATE ROLE db_user;
 ALTER ROLE db_user WITH NOSUPERUSER INHERIT NOCREATEROLE CREATEDB LOGIN NOREPLICATION PASSWORD 'md5ab2e21d1842811a25968c8f89b5995be' VALID UNTIL '2199-01-01 00:00:00+09';
 CREATE ROLE db_users;
 ALTER ROLE db_users WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB NOLOGIN NOREPLICATION VALID UNTIL '2199-01-01 00:00:00+09';
+CREATE ROLE postgres;
+ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION PASSWORD 'md5beb3c86511ff04b0f6b764fc0006161e';
 
 
 --
@@ -47,9 +49,9 @@ SET default_transaction_read_only = off;
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.3.4
--- Dumped by pg_dump version 9.3.4
--- Started on 2014-07-02 13:46:34
+-- Dumped from database version 9.4.1
+-- Dumped by pg_dump version 9.4.1
+-- Started on 2015-02-26 02:04:04
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -59,7 +61,7 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- TOC entry 193 (class 3079 OID 11750)
+-- TOC entry 193 (class 3079 OID 11855)
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -67,7 +69,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2109 (class 0 OID 0)
+-- TOC entry 2154 (class 0 OID 0)
 -- Dependencies: 193
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -82,7 +84,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 170 (class 1259 OID 43157)
+-- TOC entry 172 (class 1259 OID 17105)
 -- Name: db_version; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -91,12 +93,12 @@ CREATE TABLE db_version (
 );
 
 
-ALTER TABLE public.db_version OWNER TO postgres;
+ALTER TABLE db_version OWNER TO postgres;
 
 SET default_with_oids = true;
 
 --
--- TOC entry 171 (class 1259 OID 43160)
+-- TOC entry 173 (class 1259 OID 17108)
 -- Name: default_findings; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -106,10 +108,10 @@ CREATE TABLE default_findings (
 );
 
 
-ALTER TABLE public.default_findings OWNER TO postgres;
+ALTER TABLE default_findings OWNER TO postgres;
 
 --
--- TOC entry 172 (class 1259 OID 43166)
+-- TOC entry 174 (class 1259 OID 17114)
 -- Name: department; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -123,10 +125,10 @@ CREATE TABLE department (
 );
 
 
-ALTER TABLE public.department OWNER TO postgres;
+ALTER TABLE department OWNER TO postgres;
 
 --
--- TOC entry 173 (class 1259 OID 43170)
+-- TOC entry 175 (class 1259 OID 17118)
 -- Name: diag; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -140,10 +142,10 @@ CREATE TABLE diag (
 );
 
 
-ALTER TABLE public.diag OWNER TO postgres;
+ALTER TABLE diag OWNER TO postgres;
 
 --
--- TOC entry 174 (class 1259 OID 43173)
+-- TOC entry 176 (class 1259 OID 17121)
 -- Name: diag_category; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -191,10 +193,10 @@ CREATE TABLE diag_category (
 );
 
 
-ALTER TABLE public.diag_category OWNER TO postgres;
+ALTER TABLE diag_category OWNER TO postgres;
 
 --
--- TOC entry 175 (class 1259 OID 43179)
+-- TOC entry 177 (class 1259 OID 17127)
 -- Name: diag_diag_no_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -206,11 +208,11 @@ CREATE SEQUENCE diag_diag_no_seq
     CACHE 1;
 
 
-ALTER TABLE public.diag_diag_no_seq OWNER TO postgres;
+ALTER TABLE diag_diag_no_seq OWNER TO postgres;
 
 --
--- TOC entry 2115 (class 0 OID 0)
--- Dependencies: 175
+-- TOC entry 2160 (class 0 OID 0)
+-- Dependencies: 177
 -- Name: diag_diag_no_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -218,7 +220,7 @@ ALTER SEQUENCE diag_diag_no_seq OWNED BY diag.diag_no;
 
 
 --
--- TOC entry 176 (class 1259 OID 43181)
+-- TOC entry 178 (class 1259 OID 17129)
 -- Name: diag_name; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -264,10 +266,10 @@ CREATE TABLE diag_name (
 );
 
 
-ALTER TABLE public.diag_name OWNER TO postgres;
+ALTER TABLE diag_name OWNER TO postgres;
 
 --
--- TOC entry 177 (class 1259 OID 43187)
+-- TOC entry 179 (class 1259 OID 17135)
 -- Name: equipment; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -288,10 +290,10 @@ CREATE TABLE equipment (
 );
 
 
-ALTER TABLE public.equipment OWNER TO postgres;
+ALTER TABLE equipment OWNER TO postgres;
 
 --
--- TOC entry 178 (class 1259 OID 43191)
+-- TOC entry 180 (class 1259 OID 17139)
 -- Name: equipment_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -303,12 +305,12 @@ CREATE TABLE equipment_type (
 );
 
 
-ALTER TABLE public.equipment_type OWNER TO postgres;
+ALTER TABLE equipment_type OWNER TO postgres;
 
 SET default_with_oids = false;
 
 --
--- TOC entry 179 (class 1259 OID 43194)
+-- TOC entry 181 (class 1259 OID 17142)
 -- Name: exam; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -339,14 +341,15 @@ CREATE TABLE exam (
     explanation smallint,
     lock_time timestamp without time zone,
     terminal_ip character varying(40),
-    exam_visible boolean
+    exam_visible boolean,
+    patho_result text
 );
 
 
-ALTER TABLE public.exam OWNER TO postgres;
+ALTER TABLE exam OWNER TO postgres;
 
 --
--- TOC entry 180 (class 1259 OID 43200)
+-- TOC entry 182 (class 1259 OID 17148)
 -- Name: exam_exam_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -358,11 +361,11 @@ CREATE SEQUENCE exam_exam_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.exam_exam_id_seq OWNER TO postgres;
+ALTER TABLE exam_exam_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2121 (class 0 OID 0)
--- Dependencies: 180
+-- TOC entry 2166 (class 0 OID 0)
+-- Dependencies: 182
 -- Name: exam_exam_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -372,7 +375,7 @@ ALTER SEQUENCE exam_exam_id_seq OWNED BY exam.exam_id;
 SET default_with_oids = true;
 
 --
--- TOC entry 181 (class 1259 OID 43202)
+-- TOC entry 183 (class 1259 OID 17150)
 -- Name: exam_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -418,10 +421,10 @@ CREATE TABLE exam_type (
 );
 
 
-ALTER TABLE public.exam_type OWNER TO postgres;
+ALTER TABLE exam_type OWNER TO postgres;
 
 --
--- TOC entry 182 (class 1259 OID 43208)
+-- TOC entry 184 (class 1259 OID 17156)
 -- Name: explanation; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -433,25 +436,10 @@ CREATE TABLE explanation (
 );
 
 
-ALTER TABLE public.explanation OWNER TO postgres;
+ALTER TABLE explanation OWNER TO postgres;
 
 --
--- TOC entry 183 (class 1259 OID 43211)
--- Name: group_no; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE group_no (
-    no smallint NOT NULL,
-    group_name character varying(20),
-    group_order smallint,
-    group_visible boolean
-);
-
-
-ALTER TABLE public.group_no OWNER TO postgres;
-
---
--- TOC entry 184 (class 1259 OID 43214)
+-- TOC entry 185 (class 1259 OID 17162)
 -- Name: op_category; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -464,10 +452,10 @@ CREATE TABLE op_category (
 );
 
 
-ALTER TABLE public.op_category OWNER TO postgres;
+ALTER TABLE op_category OWNER TO postgres;
 
 --
--- TOC entry 185 (class 1259 OID 43217)
+-- TOC entry 186 (class 1259 OID 17165)
 -- Name: operator; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -486,25 +474,10 @@ CREATE TABLE operator (
 );
 
 
-ALTER TABLE public.operator OWNER TO postgres;
+ALTER TABLE operator OWNER TO postgres;
 
 --
--- TOC entry 186 (class 1259 OID 43220)
--- Name: patho_diag; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE patho_diag (
-    diag_no integer NOT NULL,
-    exam_no integer,
-    group_no smallint,
-    diagnosis text
-);
-
-
-ALTER TABLE public.patho_diag OWNER TO postgres;
-
---
--- TOC entry 187 (class 1259 OID 43226)
+-- TOC entry 187 (class 1259 OID 17174)
 -- Name: patient; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -519,10 +492,10 @@ CREATE TABLE patient (
 );
 
 
-ALTER TABLE public.patient OWNER TO postgres;
+ALTER TABLE patient OWNER TO postgres;
 
 --
--- TOC entry 188 (class 1259 OID 43232)
+-- TOC entry 188 (class 1259 OID 17180)
 -- Name: place; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -537,10 +510,10 @@ CREATE TABLE place (
 );
 
 
-ALTER TABLE public.place OWNER TO postgres;
+ALTER TABLE place OWNER TO postgres;
 
 --
--- TOC entry 189 (class 1259 OID 43236)
+-- TOC entry 189 (class 1259 OID 17184)
 -- Name: status; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -586,10 +559,10 @@ CREATE TABLE status (
 );
 
 
-ALTER TABLE public.status OWNER TO postgres;
+ALTER TABLE status OWNER TO postgres;
 
 --
--- TOC entry 190 (class 1259 OID 43242)
+-- TOC entry 190 (class 1259 OID 17190)
 -- Name: ward; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -601,10 +574,10 @@ CREATE TABLE ward (
 );
 
 
-ALTER TABLE public.ward OWNER TO postgres;
+ALTER TABLE ward OWNER TO postgres;
 
 --
--- TOC entry 191 (class 1259 OID 43245)
+-- TOC entry 191 (class 1259 OID 17193)
 -- Name: words; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -618,10 +591,10 @@ CREATE TABLE words (
 );
 
 
-ALTER TABLE public.words OWNER TO postgres;
+ALTER TABLE words OWNER TO postgres;
 
 --
--- TOC entry 192 (class 1259 OID 43251)
+-- TOC entry 192 (class 1259 OID 17199)
 -- Name: words_no_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -633,10 +606,10 @@ CREATE SEQUENCE words_no_seq
     CACHE 1;
 
 
-ALTER TABLE public.words_no_seq OWNER TO postgres;
+ALTER TABLE words_no_seq OWNER TO postgres;
 
 --
--- TOC entry 2134 (class 0 OID 0)
+-- TOC entry 2177 (class 0 OID 0)
 -- Dependencies: 192
 -- Name: words_no_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -645,7 +618,7 @@ ALTER SEQUENCE words_no_seq OWNED BY words.no;
 
 
 --
--- TOC entry 1913 (class 2604 OID 43763)
+-- TOC entry 1962 (class 2604 OID 17201)
 -- Name: diag_no; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -653,7 +626,7 @@ ALTER TABLE ONLY diag ALTER COLUMN diag_no SET DEFAULT nextval('diag_diag_no_seq
 
 
 --
--- TOC entry 1915 (class 2604 OID 43764)
+-- TOC entry 1964 (class 2604 OID 17202)
 -- Name: exam_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -661,7 +634,7 @@ ALTER TABLE ONLY exam ALTER COLUMN exam_id SET DEFAULT nextval('exam_exam_id_seq
 
 
 --
--- TOC entry 1917 (class 2604 OID 43765)
+-- TOC entry 1966 (class 2604 OID 17203)
 -- Name: no; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -669,19 +642,19 @@ ALTER TABLE ONLY words ALTER COLUMN no SET DEFAULT nextval('words_no_seq'::regcl
 
 
 --
--- TOC entry 2079 (class 0 OID 43157)
--- Dependencies: 170
+-- TOC entry 2126 (class 0 OID 17105)
+-- Dependencies: 172
 -- Data for Name: db_version; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY db_version (db_version) FROM stdin;
-1.03
+1.06
 \.
 
 
 --
--- TOC entry 2080 (class 0 OID 43160)
--- Dependencies: 171
+-- TOC entry 2127 (class 0 OID 17108)
+-- Dependencies: 173
 -- Data for Name: default_findings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -689,11 +662,6 @@ COPY default_findings (exam_type, findings) FROM stdin;
 4	\N
 5	\N
 100	\N
-1001	\N
-1002	\N
-1003	\N
-1004	\N
-1005	\N
 1006	\N
 1007	\N
 1008	\N
@@ -704,12 +672,17 @@ COPY default_findings (exam_type, findings) FROM stdin;
 2	前処置トラブル：なし\r\nT.I.まで挿入\r\n１年後再検指示
 3	test
 1	前処置トラブル：なし\r\n2nd portionまで挿入\r\nBulb：\r\nStomach：\r\nEsophagus：\r\n１年後再検指示
+1001	GB：\r\nCBD： mm、IHBD dilatation（）\r\nLiver：edge sharp、surface smooth、実質均一\r\n　　　 肝腎ｺﾝﾄﾗｽﾄ（）、深部減衰（）\r\n　　 　脈管の不明瞭化（）\r\nPancreas：正常・腫大・萎縮（体部の太さ mm）\r\n　　　　　内部ｴｺｰ（↑→↓・均一・不均一）、MPD mm\r\nSpleen：\r\nKidney：\r\n膀胱：\r\n前立腺：××mm→g\r\n子宮・卵巣：
+1002	大きさ： 右葉　××mm(normal,swelling)\r\n　　　　　左葉　××mm(normal,swelling)\r\n　　　　　峡部厚　mm(normal,swelling)\r\n実質エコー：homogenous,heterogenous、血流増加（）\r\n右葉：\r\n左葉：
+1003	【右】：［総頚動脈径体部］\r\n　　　　　 内径拡大：（）\r\n　　　 　　プラーク：（）\r\n　　　　　 内膜の表面性状：平滑、やや不整、不整、潰瘍形成\r\n　　　 　　平均IMT：　mm\r\n               PSV:  cm/s   、EDV:  cm/s\r\n               RI:   、PI:   \r\n　　　 ［球部～内頚動脈］\r\n　　　 　　プラーク：（）\r\n　　　 　　内膜の表面性状：平滑、やや不整、不整、潰瘍形成\r\n【左】：［総頚動脈径体部］\r\n　　　　　 内径拡大：（）\r\n　　　　 　プラーク：（）\r\n　　　　 　内膜の表面性状：平滑、やや不整、不整、潰瘍形成\r\n　　　　 　平均IMT：　mm\r\n               PSV:  cm/s   、EDV:  cm/s\r\n               RI:   、PI:   \r\n　　    ［球部～内頚動脈］\r\n　　　 　　プラーク：（）\r\n　　　　 　内膜の表面性状：平滑、やや不整、不整、潰瘍形成
+1004	右：\r\n左：
+1005	MV：EF slope  mm/sec、MR（－,±,1+,2+,3+）\r\n        Prolapse(AML,PML)　、MVA  cm2\r\nLV inflow：E波　cm/s、A波　cm/s、\r\n　　           E/A　、A/E　、DcT　ms\r\nLV outflow：velocity  cm/s\r\nLV：IVST　mm、PWT mm、\r\n　　 LVDd  mm、LVDs　mm、\r\n       EDV ml、ESV ml、SV ml、\r\n       CO  l/min   (HR )\r\n　　 EF　%、FS　%\r\n　　 asynergy（）\r\nLA：LAD　mm　、Trombus()\r\nAO：AoD　mm         　　LA/Ao\r\nAV：AVD mm、　AR（－,±,1+,2+,3+） 、AVA  cm2\r\n右心系：dilatation()、RVD  mm\r\nTV： TR（－,±,1+,2+,3+）、V m/sec、PG mmHg、\r\n        推定RVP mmHg\r\nPV：PR（－,±,1+,2+,3+）\r\nIVC：　mm（呼吸性変動 有無）\r\n【Comment】
 \.
 
 
 --
--- TOC entry 2081 (class 0 OID 43166)
--- Dependencies: 172
+-- TOC entry 2128 (class 0 OID 17114)
+-- Dependencies: 174
 -- Data for Name: department; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -720,8 +693,8 @@ COPY department (code, name1, name2, dp_visible, dp_order) FROM stdin;
 
 
 --
--- TOC entry 2082 (class 0 OID 43170)
--- Dependencies: 173
+-- TOC entry 2129 (class 0 OID 17118)
+-- Dependencies: 175
 -- Data for Name: diag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -730,8 +703,8 @@ COPY diag (diag_no, exam_no, diag_code, suspect, location, locate_str_after_diag
 
 
 --
--- TOC entry 2083 (class 0 OID 43173)
--- Dependencies: 174
+-- TOC entry 2130 (class 0 OID 17121)
+-- Dependencies: 176
 -- Data for Name: diag_category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -763,12 +736,19 @@ COPY diag_category (id, start_no, end_no, name_eng, name_jp, bt_order, visible, 
 200001	200000	299999	Study	研究	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 300000	300000	300000	Broncho	気管支鏡	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 300001	399999	399999	Broncho	気管支鏡	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1000000	1000000	1000000	Abdomen	腹部	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010000	1010001	1019999	Gallbladder	胆嚢	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1020000	1020001	1029999	Extrahepatic bile duct	肝外胆管	2	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030000	1030001	1039999	Liver	肝臓	3	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040000	1040001	1049999	Spleen	脾臓	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050000	1050001	1059999	Pancreas	膵臓	2	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060000	1060001	1069999	Kidney	腎臓	3	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
 --
--- TOC entry 2136 (class 0 OID 0)
--- Dependencies: 175
+-- TOC entry 2179 (class 0 OID 0)
+-- Dependencies: 177
 -- Name: diag_diag_no_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -776,8 +756,8 @@ SELECT pg_catalog.setval('diag_diag_no_seq', 45, true);
 
 
 --
--- TOC entry 2085 (class 0 OID 43181)
--- Dependencies: 176
+-- TOC entry 2132 (class 0 OID 17129)
+-- Dependencies: 178
 -- Data for Name: diag_name; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1066,12 +1046,87 @@ COPY diag_name (no, name_eng, name_jp, diag_order, diag_visible, name_ar, name_b
 1040	\N	喉頭炎	1040	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 2030	\N	GERD(LA grade A)	2030	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 0	Normal	正常	0	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010001	The gallbladder within normal limits	胆嚢異常なし	1010001	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010010	The gallbladder cannot be well visualized	胆嚢一部描出不良	1010010	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010020	The gallbladder cannot be visualized	胆嚢描出不能	1010020	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010100	Gallbladder polyps	胆嚢ポリープ	1010100	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010200	Gallbladder tumors	胆嚢腫瘤	1010200	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010300	Adenomyomatosis	胆嚢腺筋腫症	1010300	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010400	Diffuse gallbladder wall thickening	びまん性胆嚢壁肥厚	1010400	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010500	Enlarged gallbladder	胆嚢腫大	1010500	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010600	Gallbladder stones	胆嚢結石	1010600	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010700	Gallbladder stones or pneumobilia	胆嚢結石または胆嚢気腫	1010700	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010800	Biliary sand	胆砂	1010800	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1010900	Biliary sludge	胆泥	1010900	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1011000	The gallbladder wall cannot be well visualized	胆嚢壁評価不良	1011000	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1012000	After gallbladder removal	胆嚢摘出後	1012000	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1020001	Extrahepatic bile duct within normal limits	肝外胆管異常なし	1020001	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1020010	Extrahepatic bile duct cannot be well visualized	肝外胆管一部描出不良	1020010	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1020020	Extrahepatic bile duct cannot be visualized	肝外胆管描出不能	1020020	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1020100	Extrahepatic bile duct dilatation	肝外胆管拡張	1020100	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1020200	Stones in extrahepatic bile duct	肝外胆管結石	1020200	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1020300	Sludge in extrahepatic bile duct	肝外胆管デブリ	1020300	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1020400	Extrahepatic bile duct tumors	肝外胆管腫瘍	1020400	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1020500	Extrahepatic bile duct wall thickening	肝外胆管壁肥厚	1020500	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1020600	Pneumobilia in extrahepatic bile duct	肝外胆管気腫	1020600	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030001	The liver within normal limits	肝異常所見なし	1030001	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030010	The liver cannot be well visualized	肝一部描出不良	1030010	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030020	The liver cannot be visualized	肝描出不能	1030020	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030100	Liver tumors	肝腫瘍	1030100	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030200	Liver hemangiomas	肝血管腫	1030200	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030300	Liver cysts	肝嚢胞	1030300	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030400	Cystic tumors of the liver	肝嚢胞性腫瘍	1030400	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030500	Liver calcification	肝内石灰化	1030500	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030600	Intrahepatic bile duct stones or Pneumobilia	肝内胆管結石または気腫	1030600	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030700	Fatty liver	脂肪肝	1030700	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030800	Chronic hepatopathy	慢性肝障害	1030800	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1030900	Intrahepatic bile duct dilatation	肝内胆管拡張	1030900	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1031000	Vascular disorders of the liver	肝血管異常	1031000	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040001	The spleen within normal limits	脾異常所見なし	1040001	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040010	The spleen cannot be well visualized	脾一部描出不良	1040010	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040020	The spleen cannot be visualized	脾描出不能	1040020	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040100	Enlarged spleen	脾腫	1040100	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040200	Accesory spleen	副脾	1040200	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040300	Splenic calcification	脾内石灰化	1040300	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040400	Splenic cysts	脾嚢胞	1040400	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040500	Splenic tumors	脾腫瘤	1040500	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040600	Cystic masses of the spleen	脾嚢胞性腫瘍	1040600	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040700	Tumors at the splenic hilum	脾門部腫瘤	1040700	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1040800	Abnormalities of splenic hilar vessels	脾門部異常血管	1040800	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1042000	After spleen removal	脾摘出後	1042000	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050001	The pancreas within normal limits	膵異常所見なし	1050001	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050010	The pancreas cannot be well visualized	膵一部描出不良	1050010	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050020	The pancreas cannot be visualized	膵描出不能	1050020	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050100	The pancreatic duct dilatation	膵管拡張	1050100	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050200	Pancreatic cysts	膵嚢胞	1050200	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050300	Pancreatic atrophy	膵萎縮	1050300	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050400	Pancreatic stones	膵石	1050400	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050500	Pancreatic tumors	膵腫瘤	1050500	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050600	Cystic tumors of the pancreas	膵嚢胞性腫瘍	1050600	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050700	Enlarged pancreas	膵腫大	1050700	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1050800	Deformed pancreas	変形	1050800	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060001	Kidneys within normal limits	腎異常所見なし	1060001	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060010	Kidneys cannot be well visualized	腎一部描出不良	1060010	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060020	Kidneys cannot be visualized	腎描出不能	1060020	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060100	Kedney cysts	腎嚢胞	1060100	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060200	Cystic tumors of the kidney	腎嚢胞性腫瘤	1060200	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060300	Polycystic kidney disease	多発性嚢胞腎	1060300	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060400	Kidney tumors	腎腫瘤	1060400	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060500	Renal angiomyolipoma	腎血管筋脂肪腫	1060500	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060600	Renal calcification	腎石灰化	1060600	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060700	Kidney stones	腎結石	1060700	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060800	Pyelectasis	腎盂拡張	1060800	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060900	Hydronephrosis	水腎症	1060900	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1061000	Deformed kidney	腎の変形	1061000	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1061100	Enlarged kidney	腎腫大	1061100	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1061200	Atrophic kidney	腎萎縮	1061200	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1062000	After kidney removal	腎摘出後	1062000	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
 --
--- TOC entry 2086 (class 0 OID 43187)
--- Dependencies: 177
+-- TOC entry 2133 (class 0 OID 17135)
+-- Dependencies: 179
 -- Data for Name: equipment; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1081,8 +1136,8 @@ COPY equipment (equipment_no, name, equipment_type, gf_order, cf_order, sv_order
 
 
 --
--- TOC entry 2087 (class 0 OID 43191)
--- Dependencies: 178
+-- TOC entry 2134 (class 0 OID 17139)
+-- Dependencies: 180
 -- Data for Name: equipment_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1098,18 +1153,18 @@ COPY equipment_type (type_no, name, type_order, type_visible) FROM stdin;
 
 
 --
--- TOC entry 2088 (class 0 OID 43194)
--- Dependencies: 179
+-- TOC entry 2135 (class 0 OID 17142)
+-- Dependencies: 181
 -- Data for Name: exam; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY exam (exam_id, pt_id, purpose, department, order_dr, ward_id, exam_day, exam_type, pathology, patho_no, reply_patho, operator1, operator2, operator3, operator4, operator5, diag_dr, final_diag_dr, equipment, place_no, findings, comment, exam_status, explanation, lock_time, terminal_ip, exam_visible) FROM stdin;
+COPY exam (exam_id, pt_id, purpose, department, order_dr, ward_id, exam_day, exam_type, pathology, patho_no, reply_patho, operator1, operator2, operator3, operator4, operator5, diag_dr, final_diag_dr, equipment, place_no, findings, comment, exam_status, explanation, lock_time, terminal_ip, exam_visible, patho_result) FROM stdin;
 \.
 
 
 --
--- TOC entry 2137 (class 0 OID 0)
--- Dependencies: 180
+-- TOC entry 2180 (class 0 OID 0)
+-- Dependencies: 182
 -- Name: exam_exam_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1117,8 +1172,8 @@ SELECT pg_catalog.setval('exam_exam_id_seq', 68, true);
 
 
 --
--- TOC entry 2090 (class 0 OID 43202)
--- Dependencies: 181
+-- TOC entry 2137 (class 0 OID 17150)
+-- Dependencies: 183
 -- Data for Name: exam_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1145,8 +1200,8 @@ COPY exam_type (type_no, name_eng, name_jp, type_order, type_visible, name_ar, n
 
 
 --
--- TOC entry 2091 (class 0 OID 43208)
--- Dependencies: 182
+-- TOC entry 2138 (class 0 OID 17156)
+-- Dependencies: 184
 -- Data for Name: explanation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1155,23 +1210,8 @@ COPY explanation (no, explanation_status, status_order, status_visible) FROM std
 
 
 --
--- TOC entry 2092 (class 0 OID 43211)
--- Dependencies: 183
--- Data for Name: group_no; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY group_no (no, group_name, group_order, group_visible) FROM stdin;
-10	Group 1	1	t
-20	Group 2	2	t
-30	Group 3	3	t
-40	Group 4	4	t
-50	Group 5	5	t
-\.
-
-
---
--- TOC entry 2093 (class 0 OID 43214)
--- Dependencies: 184
+-- TOC entry 2139 (class 0 OID 17162)
+-- Dependencies: 185
 -- Data for Name: op_category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1182,8 +1222,8 @@ COPY op_category (opc_no, opc_name, opc_visible, opc_order, can_diag) FROM stdin
 
 
 --
--- TOC entry 2094 (class 0 OID 43217)
--- Dependencies: 185
+-- TOC entry 2140 (class 0 OID 17165)
+-- Dependencies: 186
 -- Data for Name: operator; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1193,17 +1233,7 @@ test	test	1	1	test	t	1	\N	\N	t	t
 
 
 --
--- TOC entry 2095 (class 0 OID 43220)
--- Dependencies: 186
--- Data for Name: patho_diag; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY patho_diag (diag_no, exam_no, group_no, diagnosis) FROM stdin;
-\.
-
-
---
--- TOC entry 2096 (class 0 OID 43226)
+-- TOC entry 2141 (class 0 OID 17174)
 -- Dependencies: 187
 -- Data for Name: patient; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1215,19 +1245,20 @@ COPY patient (pt_id, pt_name, birthday, gender, pt_memo, lock_time, terminal_ip)
 
 
 --
--- TOC entry 2097 (class 0 OID 43232)
+-- TOC entry 2142 (class 0 OID 17180)
 -- Dependencies: 188
 -- Data for Name: place; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY place (place_no, name1, name2, place_order_endo, place_order_us, place_visible) FROM stdin;
-1	内視鏡室	\N	\N	\N	t
 2	透視室	\N	\N	\N	f
+3	超音波室	\N	999	1	t
+1	内視鏡室	\N	1	999	t
 \.
 
 
 --
--- TOC entry 2098 (class 0 OID 43236)
+-- TOC entry 2143 (class 0 OID 17184)
 -- Dependencies: 189
 -- Data for Name: status; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1242,7 +1273,7 @@ COPY status (status_no, name_eng, name_jp, status_order, status_visible, name_ar
 
 
 --
--- TOC entry 2099 (class 0 OID 43242)
+-- TOC entry 2144 (class 0 OID 17190)
 -- Dependencies: 190
 -- Data for Name: ward; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1253,7 +1284,7 @@ COPY ward (ward_no, ward, ward_order, ward_visible) FROM stdin;
 
 
 --
--- TOC entry 2100 (class 0 OID 43245)
+-- TOC entry 2145 (class 0 OID 17193)
 -- Dependencies: 191
 -- Data for Name: words; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1284,20 +1315,29 @@ COPY words (no, words1, words2, words3, operator, word_order) FROM stdin;
 5	fornix	cardia	\N	Upper endoscopy	5
 4	体下部	体中部	体上部	Upper endoscopy	4
 3	prepylorus	antrum	胃角	Upper endoscopy	3
+31	異常所見なし	描出不良	mm	Abdomen US	1
+32	×	SE	Acoustic shadow	Abdomen US	2
+33	辺縁低エコー帯	後方エコー	外側陰影	Abdomen US	3
+34	cyst	cystic echo	摘出後	Abdomen US	4
+35	polyp	debris	sludge	Abdomen US	5
+36	stone	comet-like echo	sonolucent layer	Abdomen US	6
+37	頸部	体部	底部	Abdomen US	7
+38	左葉	右葉	dull	Abdomen US	8
+39	mosaic pattern	chameleon sign	wax and wane sign	Abdomen US	9
 \.
 
 
 --
--- TOC entry 2138 (class 0 OID 0)
+-- TOC entry 2181 (class 0 OID 0)
 -- Dependencies: 192
 -- Name: words_no_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('words_no_seq', 30, true);
+SELECT pg_catalog.setval('words_no_seq', 39, true);
 
 
 --
--- TOC entry 1919 (class 2606 OID 43652)
+-- TOC entry 1968 (class 2606 OID 17696)
 -- Name: db_version_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1306,7 +1346,7 @@ ALTER TABLE ONLY db_version
 
 
 --
--- TOC entry 1921 (class 2606 OID 43654)
+-- TOC entry 1970 (class 2606 OID 17698)
 -- Name: default_findings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1315,7 +1355,7 @@ ALTER TABLE ONLY default_findings
 
 
 --
--- TOC entry 1923 (class 2606 OID 43656)
+-- TOC entry 1972 (class 2606 OID 17700)
 -- Name: department_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1324,7 +1364,7 @@ ALTER TABLE ONLY department
 
 
 --
--- TOC entry 1927 (class 2606 OID 43658)
+-- TOC entry 1976 (class 2606 OID 17702)
 -- Name: diag_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1333,7 +1373,7 @@ ALTER TABLE ONLY diag_category
 
 
 --
--- TOC entry 1929 (class 2606 OID 43660)
+-- TOC entry 1978 (class 2606 OID 17704)
 -- Name: diag_name_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1342,7 +1382,7 @@ ALTER TABLE ONLY diag_name
 
 
 --
--- TOC entry 1925 (class 2606 OID 43662)
+-- TOC entry 1974 (class 2606 OID 17706)
 -- Name: diag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1351,7 +1391,7 @@ ALTER TABLE ONLY diag
 
 
 --
--- TOC entry 1933 (class 2606 OID 43664)
+-- TOC entry 1982 (class 2606 OID 17708)
 -- Name: equipment_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1360,7 +1400,7 @@ ALTER TABLE ONLY equipment_type
 
 
 --
--- TOC entry 1935 (class 2606 OID 43666)
+-- TOC entry 1984 (class 2606 OID 17710)
 -- Name: exam_pkey1; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1369,7 +1409,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 1937 (class 2606 OID 43668)
+-- TOC entry 1986 (class 2606 OID 17712)
 -- Name: exam_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1378,7 +1418,7 @@ ALTER TABLE ONLY exam_type
 
 
 --
--- TOC entry 1939 (class 2606 OID 43670)
+-- TOC entry 1988 (class 2606 OID 17714)
 -- Name: explanation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1387,16 +1427,7 @@ ALTER TABLE ONLY explanation
 
 
 --
--- TOC entry 1941 (class 2606 OID 43672)
--- Name: group_no_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY group_no
-    ADD CONSTRAINT group_no_pkey PRIMARY KEY (no);
-
-
---
--- TOC entry 1943 (class 2606 OID 43674)
+-- TOC entry 1990 (class 2606 OID 17718)
 -- Name: op_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1405,7 +1436,7 @@ ALTER TABLE ONLY op_category
 
 
 --
--- TOC entry 1945 (class 2606 OID 43676)
+-- TOC entry 1992 (class 2606 OID 17720)
 -- Name: operator_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1414,16 +1445,7 @@ ALTER TABLE ONLY operator
 
 
 --
--- TOC entry 1947 (class 2606 OID 43678)
--- Name: patho_diag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY patho_diag
-    ADD CONSTRAINT patho_diag_pkey PRIMARY KEY (diag_no);
-
-
---
--- TOC entry 1949 (class 2606 OID 43680)
+-- TOC entry 1994 (class 2606 OID 17724)
 -- Name: patient_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1432,7 +1454,7 @@ ALTER TABLE ONLY patient
 
 
 --
--- TOC entry 1951 (class 2606 OID 43682)
+-- TOC entry 1996 (class 2606 OID 17726)
 -- Name: room_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1441,7 +1463,7 @@ ALTER TABLE ONLY place
 
 
 --
--- TOC entry 1931 (class 2606 OID 43684)
+-- TOC entry 1980 (class 2606 OID 17728)
 -- Name: scope_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1450,7 +1472,7 @@ ALTER TABLE ONLY equipment
 
 
 --
--- TOC entry 1953 (class 2606 OID 43686)
+-- TOC entry 1998 (class 2606 OID 17730)
 -- Name: status_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1459,7 +1481,7 @@ ALTER TABLE ONLY status
 
 
 --
--- TOC entry 1955 (class 2606 OID 43688)
+-- TOC entry 2000 (class 2606 OID 17732)
 -- Name: ward_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1468,7 +1490,7 @@ ALTER TABLE ONLY ward
 
 
 --
--- TOC entry 1957 (class 2606 OID 43690)
+-- TOC entry 2002 (class 2606 OID 17734)
 -- Name: words_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1477,7 +1499,7 @@ ALTER TABLE ONLY words
 
 
 --
--- TOC entry 1961 (class 2606 OID 43691)
+-- TOC entry 2006 (class 2606 OID 17735)
 -- Name: department; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1486,7 +1508,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 1971 (class 2606 OID 43696)
+-- TOC entry 2016 (class 2606 OID 17740)
 -- Name: department; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1495,7 +1517,7 @@ ALTER TABLE ONLY operator
 
 
 --
--- TOC entry 1958 (class 2606 OID 43701)
+-- TOC entry 2003 (class 2606 OID 17745)
 -- Name: diag_name; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1504,7 +1526,7 @@ ALTER TABLE ONLY diag
 
 
 --
--- TOC entry 1962 (class 2606 OID 43706)
+-- TOC entry 2007 (class 2606 OID 17750)
 -- Name: equipment; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1513,7 +1535,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 1960 (class 2606 OID 43711)
+-- TOC entry 2005 (class 2606 OID 17755)
 -- Name: equipment_type; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1522,7 +1544,7 @@ ALTER TABLE ONLY equipment
 
 
 --
--- TOC entry 1959 (class 2606 OID 43716)
+-- TOC entry 2004 (class 2606 OID 17760)
 -- Name: exam; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1531,16 +1553,16 @@ ALTER TABLE ONLY diag
 
 
 --
--- TOC entry 1963 (class 2606 OID 43721)
+-- TOC entry 2008 (class 2606 OID 17765)
 -- Name: exam_type; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY exam
-    ADD CONSTRAINT exam_type FOREIGN KEY (exam_type) REFERENCES equipment_type(type_no);
+    ADD CONSTRAINT exam_type FOREIGN KEY (exam_type) REFERENCES exam_type(type_no);
 
 
 --
--- TOC entry 1964 (class 2606 OID 43726)
+-- TOC entry 2009 (class 2606 OID 17770)
 -- Name: operator1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1549,7 +1571,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 1965 (class 2606 OID 43731)
+-- TOC entry 2010 (class 2606 OID 17775)
 -- Name: operator2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1558,7 +1580,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 1966 (class 2606 OID 43736)
+-- TOC entry 2011 (class 2606 OID 17780)
 -- Name: operator3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1567,7 +1589,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 1967 (class 2606 OID 43741)
+-- TOC entry 2012 (class 2606 OID 17785)
 -- Name: operator4; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1576,7 +1598,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 1968 (class 2606 OID 43746)
+-- TOC entry 2013 (class 2606 OID 17790)
 -- Name: operator5; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1585,7 +1607,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 1969 (class 2606 OID 43751)
+-- TOC entry 2014 (class 2606 OID 17795)
 -- Name: place; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1594,7 +1616,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 1970 (class 2606 OID 43756)
+-- TOC entry 2015 (class 2606 OID 17800)
 -- Name: ward; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1603,7 +1625,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 2108 (class 0 OID 0)
+-- TOC entry 2153 (class 0 OID 0)
 -- Dependencies: 6
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -1615,8 +1637,8 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
--- TOC entry 2110 (class 0 OID 0)
--- Dependencies: 170
+-- TOC entry 2155 (class 0 OID 0)
+-- Dependencies: 172
 -- Name: db_version; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1627,8 +1649,8 @@ GRANT SELECT ON TABLE db_version TO db_users;
 
 
 --
--- TOC entry 2111 (class 0 OID 0)
--- Dependencies: 171
+-- TOC entry 2156 (class 0 OID 0)
+-- Dependencies: 173
 -- Name: default_findings; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1639,8 +1661,8 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE default_findings TO db_users;
 
 
 --
--- TOC entry 2112 (class 0 OID 0)
--- Dependencies: 172
+-- TOC entry 2157 (class 0 OID 0)
+-- Dependencies: 174
 -- Name: department; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1651,8 +1673,8 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE department TO db_users;
 
 
 --
--- TOC entry 2113 (class 0 OID 0)
--- Dependencies: 173
+-- TOC entry 2158 (class 0 OID 0)
+-- Dependencies: 175
 -- Name: diag; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1663,8 +1685,8 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE diag TO db_users;
 
 
 --
--- TOC entry 2114 (class 0 OID 0)
--- Dependencies: 174
+-- TOC entry 2159 (class 0 OID 0)
+-- Dependencies: 176
 -- Name: diag_category; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1675,8 +1697,8 @@ GRANT SELECT ON TABLE diag_category TO db_users;
 
 
 --
--- TOC entry 2116 (class 0 OID 0)
--- Dependencies: 175
+-- TOC entry 2161 (class 0 OID 0)
+-- Dependencies: 177
 -- Name: diag_diag_no_seq; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1687,8 +1709,8 @@ GRANT ALL ON SEQUENCE diag_diag_no_seq TO db_users;
 
 
 --
--- TOC entry 2117 (class 0 OID 0)
--- Dependencies: 176
+-- TOC entry 2162 (class 0 OID 0)
+-- Dependencies: 178
 -- Name: diag_name; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1699,8 +1721,8 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE diag_name TO db_users;
 
 
 --
--- TOC entry 2118 (class 0 OID 0)
--- Dependencies: 177
+-- TOC entry 2163 (class 0 OID 0)
+-- Dependencies: 179
 -- Name: equipment; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1711,8 +1733,8 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE equipment TO db_users;
 
 
 --
--- TOC entry 2119 (class 0 OID 0)
--- Dependencies: 178
+-- TOC entry 2164 (class 0 OID 0)
+-- Dependencies: 180
 -- Name: equipment_type; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1723,8 +1745,8 @@ GRANT SELECT,UPDATE ON TABLE equipment_type TO db_users;
 
 
 --
--- TOC entry 2120 (class 0 OID 0)
--- Dependencies: 179
+-- TOC entry 2165 (class 0 OID 0)
+-- Dependencies: 181
 -- Name: exam; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1735,8 +1757,8 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE exam TO db_users;
 
 
 --
--- TOC entry 2122 (class 0 OID 0)
--- Dependencies: 180
+-- TOC entry 2167 (class 0 OID 0)
+-- Dependencies: 182
 -- Name: exam_exam_id_seq; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1747,8 +1769,8 @@ GRANT ALL ON SEQUENCE exam_exam_id_seq TO db_users;
 
 
 --
--- TOC entry 2123 (class 0 OID 0)
--- Dependencies: 181
+-- TOC entry 2168 (class 0 OID 0)
+-- Dependencies: 183
 -- Name: exam_type; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1759,8 +1781,8 @@ GRANT SELECT,UPDATE ON TABLE exam_type TO db_users;
 
 
 --
--- TOC entry 2124 (class 0 OID 0)
--- Dependencies: 182
+-- TOC entry 2169 (class 0 OID 0)
+-- Dependencies: 184
 -- Name: explanation; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1771,20 +1793,8 @@ GRANT SELECT ON TABLE explanation TO db_users;
 
 
 --
--- TOC entry 2125 (class 0 OID 0)
--- Dependencies: 183
--- Name: group_no; Type: ACL; Schema: public; Owner: postgres
---
-
-REVOKE ALL ON TABLE group_no FROM PUBLIC;
-REVOKE ALL ON TABLE group_no FROM postgres;
-GRANT ALL ON TABLE group_no TO postgres;
-GRANT SELECT ON TABLE group_no TO db_users;
-
-
---
--- TOC entry 2126 (class 0 OID 0)
--- Dependencies: 184
+-- TOC entry 2170 (class 0 OID 0)
+-- Dependencies: 185
 -- Name: op_category; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1795,8 +1805,8 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE op_category TO db_users;
 
 
 --
--- TOC entry 2127 (class 0 OID 0)
--- Dependencies: 185
+-- TOC entry 2171 (class 0 OID 0)
+-- Dependencies: 186
 -- Name: operator; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1807,19 +1817,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE operator TO db_users;
 
 
 --
--- TOC entry 2128 (class 0 OID 0)
--- Dependencies: 186
--- Name: patho_diag; Type: ACL; Schema: public; Owner: postgres
---
-
-REVOKE ALL ON TABLE patho_diag FROM PUBLIC;
-REVOKE ALL ON TABLE patho_diag FROM postgres;
-GRANT ALL ON TABLE patho_diag TO postgres;
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE patho_diag TO db_users;
-
-
---
--- TOC entry 2129 (class 0 OID 0)
+-- TOC entry 2172 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: patient; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1831,7 +1829,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE patient TO db_users;
 
 
 --
--- TOC entry 2130 (class 0 OID 0)
+-- TOC entry 2173 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: place; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1843,7 +1841,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE place TO db_users;
 
 
 --
--- TOC entry 2131 (class 0 OID 0)
+-- TOC entry 2174 (class 0 OID 0)
 -- Dependencies: 189
 -- Name: status; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1855,7 +1853,7 @@ GRANT SELECT ON TABLE status TO db_users;
 
 
 --
--- TOC entry 2132 (class 0 OID 0)
+-- TOC entry 2175 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: ward; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1867,7 +1865,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE ward TO db_users;
 
 
 --
--- TOC entry 2133 (class 0 OID 0)
+-- TOC entry 2176 (class 0 OID 0)
 -- Dependencies: 191
 -- Name: words; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1879,7 +1877,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE words TO db_users;
 
 
 --
--- TOC entry 2135 (class 0 OID 0)
+-- TOC entry 2178 (class 0 OID 0)
 -- Dependencies: 192
 -- Name: words_no_seq; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1890,7 +1888,7 @@ GRANT ALL ON SEQUENCE words_no_seq TO postgres;
 GRANT ALL ON SEQUENCE words_no_seq TO db_users;
 
 
--- Completed on 2014-07-02 13:46:36
+-- Completed on 2015-02-26 02:04:08
 
 --
 -- PostgreSQL database dump complete
@@ -1904,9 +1902,9 @@ SET default_transaction_read_only = off;
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.3.4
--- Dumped by pg_dump version 9.3.4
--- Started on 2014-07-02 13:46:36
+-- Dumped from database version 9.4.1
+-- Dumped by pg_dump version 9.4.1
+-- Started on 2015-02-26 02:04:08
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1916,8 +1914,8 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- TOC entry 1930 (class 1262 OID 12029)
--- Dependencies: 1929
+-- TOC entry 1990 (class 1262 OID 12135)
+-- Dependencies: 1989
 -- Name: postgres; Type: COMMENT; Schema: -; Owner: postgres
 --
 
@@ -1925,7 +1923,7 @@ COMMENT ON DATABASE postgres IS 'default administrative connection database';
 
 
 --
--- TOC entry 171 (class 3079 OID 11750)
+-- TOC entry 173 (class 3079 OID 11855)
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -1933,8 +1931,8 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 1933 (class 0 OID 0)
--- Dependencies: 171
+-- TOC entry 1993 (class 0 OID 0)
+-- Dependencies: 173
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
@@ -1942,7 +1940,7 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
--- TOC entry 170 (class 3079 OID 16384)
+-- TOC entry 172 (class 3079 OID 16384)
 -- Name: adminpack; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -1950,8 +1948,8 @@ CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 1934 (class 0 OID 0)
--- Dependencies: 170
+-- TOC entry 1994 (class 0 OID 0)
+-- Dependencies: 172
 -- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
 --
 
@@ -1959,7 +1957,7 @@ COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
 
 
 --
--- TOC entry 1932 (class 0 OID 0)
+-- TOC entry 1992 (class 0 OID 0)
 -- Dependencies: 6
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -1970,7 +1968,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2014-07-02 13:46:37
+-- Completed on 2015-02-26 02:04:12
 
 --
 -- PostgreSQL database dump complete
@@ -1984,9 +1982,9 @@ SET default_transaction_read_only = off;
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.3.4
--- Dumped by pg_dump version 9.3.4
--- Started on 2014-07-02 13:46:37
+-- Dumped from database version 9.4.1
+-- Dumped by pg_dump version 9.4.1
+-- Started on 2015-02-26 02:04:12
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1996,8 +1994,8 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- TOC entry 1929 (class 1262 OID 1)
--- Dependencies: 1928
+-- TOC entry 1989 (class 1262 OID 1)
+-- Dependencies: 1988
 -- Name: template1; Type: COMMENT; Schema: -; Owner: postgres
 --
 
@@ -2005,7 +2003,7 @@ COMMENT ON DATABASE template1 IS 'default template database';
 
 
 --
--- TOC entry 170 (class 3079 OID 11750)
+-- TOC entry 172 (class 3079 OID 11855)
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -2013,8 +2011,8 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 1932 (class 0 OID 0)
--- Dependencies: 170
+-- TOC entry 1992 (class 0 OID 0)
+-- Dependencies: 172
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
@@ -2022,7 +2020,7 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
--- TOC entry 1931 (class 0 OID 0)
+-- TOC entry 1991 (class 0 OID 0)
 -- Dependencies: 6
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -2033,13 +2031,13 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2014-07-02 13:46:37
+-- Completed on 2015-02-26 02:04:16
 
 --
 -- PostgreSQL database dump complete
 --
 
--- Completed on 2014-07-02 13:46:37
+-- Completed on 2015-02-26 02:04:16
 
 --
 -- PostgreSQL database cluster dump complete
