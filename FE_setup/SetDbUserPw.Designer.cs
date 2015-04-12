@@ -59,6 +59,7 @@
             this.Controls.Add(this.btOk);
             this.Controls.Add(this.tbPw);
             this.Name = "SetDbUserPw";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Input new db_user password";
             this.ResumeLayout(false);
             this.PerformLayout();

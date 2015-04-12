@@ -41,7 +41,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(160, 19);
             this.label1.TabIndex = 0;
-            this.label1.Text = "FE_setup Ver. 1.05";
+            this.label1.Text = "FE_setup Ver. 1.07";
             // 
             // label2
             // 
@@ -74,6 +74,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Version";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Version";
             this.ResumeLayout(false);
             this.PerformLayout();

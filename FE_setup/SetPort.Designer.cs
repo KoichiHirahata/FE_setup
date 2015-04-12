@@ -72,6 +72,7 @@
             this.Controls.Add(this.tbPortNo);
             this.Controls.Add(this.label1);
             this.Name = "SetPort";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Set port number";
             this.ResumeLayout(false);
             this.PerformLayout();
