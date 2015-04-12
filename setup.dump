@@ -2,7 +2,7 @@
 -- PostgreSQL database cluster dump
 --
 
--- Started on 2015-02-26 02:04:04
+-- Started on 2015-04-13 00:02:08
 
 SET default_transaction_read_only = off;
 
@@ -17,8 +17,6 @@ CREATE ROLE db_user;
 ALTER ROLE db_user WITH NOSUPERUSER INHERIT NOCREATEROLE CREATEDB LOGIN NOREPLICATION PASSWORD 'md5ab2e21d1842811a25968c8f89b5995be' VALID UNTIL '2199-01-01 00:00:00+09';
 CREATE ROLE db_users;
 ALTER ROLE db_users WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB NOLOGIN NOREPLICATION VALID UNTIL '2199-01-01 00:00:00+09';
-CREATE ROLE postgres;
-ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION PASSWORD 'md5beb3c86511ff04b0f6b764fc0006161e';
 
 
 --
@@ -51,7 +49,7 @@ SET default_transaction_read_only = off;
 
 -- Dumped from database version 9.4.1
 -- Dumped by pg_dump version 9.4.1
--- Started on 2015-02-26 02:04:04
+-- Started on 2015-04-13 00:02:08
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -69,7 +67,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2154 (class 0 OID 0)
+-- TOC entry 2155 (class 0 OID 0)
 -- Dependencies: 193
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -84,7 +82,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 172 (class 1259 OID 17105)
+-- TOC entry 172 (class 1259 OID 25209)
 -- Name: db_version; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -98,7 +96,7 @@ ALTER TABLE db_version OWNER TO postgres;
 SET default_with_oids = true;
 
 --
--- TOC entry 173 (class 1259 OID 17108)
+-- TOC entry 173 (class 1259 OID 25212)
 -- Name: default_findings; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -111,7 +109,7 @@ CREATE TABLE default_findings (
 ALTER TABLE default_findings OWNER TO postgres;
 
 --
--- TOC entry 174 (class 1259 OID 17114)
+-- TOC entry 174 (class 1259 OID 25218)
 -- Name: department; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -128,7 +126,7 @@ CREATE TABLE department (
 ALTER TABLE department OWNER TO postgres;
 
 --
--- TOC entry 175 (class 1259 OID 17118)
+-- TOC entry 175 (class 1259 OID 25222)
 -- Name: diag; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -137,15 +135,15 @@ CREATE TABLE diag (
     exam_no integer NOT NULL,
     diag_code integer NOT NULL,
     suspect boolean,
-    location character varying(255),
-    locate_str_after_diag boolean
+    premodifier character varying(255),
+    postmodifier character varying(255)
 );
 
 
 ALTER TABLE diag OWNER TO postgres;
 
 --
--- TOC entry 176 (class 1259 OID 17121)
+-- TOC entry 176 (class 1259 OID 25225)
 -- Name: diag_category; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -196,7 +194,7 @@ CREATE TABLE diag_category (
 ALTER TABLE diag_category OWNER TO postgres;
 
 --
--- TOC entry 177 (class 1259 OID 17127)
+-- TOC entry 177 (class 1259 OID 25231)
 -- Name: diag_diag_no_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -211,7 +209,7 @@ CREATE SEQUENCE diag_diag_no_seq
 ALTER TABLE diag_diag_no_seq OWNER TO postgres;
 
 --
--- TOC entry 2160 (class 0 OID 0)
+-- TOC entry 2161 (class 0 OID 0)
 -- Dependencies: 177
 -- Name: diag_diag_no_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -220,7 +218,7 @@ ALTER SEQUENCE diag_diag_no_seq OWNED BY diag.diag_no;
 
 
 --
--- TOC entry 178 (class 1259 OID 17129)
+-- TOC entry 178 (class 1259 OID 25233)
 -- Name: diag_name; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -269,7 +267,7 @@ CREATE TABLE diag_name (
 ALTER TABLE diag_name OWNER TO postgres;
 
 --
--- TOC entry 179 (class 1259 OID 17135)
+-- TOC entry 179 (class 1259 OID 25239)
 -- Name: equipment; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -293,7 +291,7 @@ CREATE TABLE equipment (
 ALTER TABLE equipment OWNER TO postgres;
 
 --
--- TOC entry 180 (class 1259 OID 17139)
+-- TOC entry 180 (class 1259 OID 25243)
 -- Name: equipment_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -310,7 +308,7 @@ ALTER TABLE equipment_type OWNER TO postgres;
 SET default_with_oids = false;
 
 --
--- TOC entry 181 (class 1259 OID 17142)
+-- TOC entry 181 (class 1259 OID 25246)
 -- Name: exam; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -349,7 +347,7 @@ CREATE TABLE exam (
 ALTER TABLE exam OWNER TO postgres;
 
 --
--- TOC entry 182 (class 1259 OID 17148)
+-- TOC entry 182 (class 1259 OID 25252)
 -- Name: exam_exam_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -364,7 +362,7 @@ CREATE SEQUENCE exam_exam_id_seq
 ALTER TABLE exam_exam_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2166 (class 0 OID 0)
+-- TOC entry 2167 (class 0 OID 0)
 -- Dependencies: 182
 -- Name: exam_exam_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -375,7 +373,7 @@ ALTER SEQUENCE exam_exam_id_seq OWNED BY exam.exam_id;
 SET default_with_oids = true;
 
 --
--- TOC entry 183 (class 1259 OID 17150)
+-- TOC entry 183 (class 1259 OID 25254)
 -- Name: exam_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -424,7 +422,7 @@ CREATE TABLE exam_type (
 ALTER TABLE exam_type OWNER TO postgres;
 
 --
--- TOC entry 184 (class 1259 OID 17156)
+-- TOC entry 184 (class 1259 OID 25260)
 -- Name: explanation; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -439,7 +437,7 @@ CREATE TABLE explanation (
 ALTER TABLE explanation OWNER TO postgres;
 
 --
--- TOC entry 185 (class 1259 OID 17162)
+-- TOC entry 185 (class 1259 OID 25263)
 -- Name: op_category; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -455,7 +453,7 @@ CREATE TABLE op_category (
 ALTER TABLE op_category OWNER TO postgres;
 
 --
--- TOC entry 186 (class 1259 OID 17165)
+-- TOC entry 186 (class 1259 OID 25266)
 -- Name: operator; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -477,7 +475,7 @@ CREATE TABLE operator (
 ALTER TABLE operator OWNER TO postgres;
 
 --
--- TOC entry 187 (class 1259 OID 17174)
+-- TOC entry 187 (class 1259 OID 25269)
 -- Name: patient; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -495,7 +493,7 @@ CREATE TABLE patient (
 ALTER TABLE patient OWNER TO postgres;
 
 --
--- TOC entry 188 (class 1259 OID 17180)
+-- TOC entry 188 (class 1259 OID 25275)
 -- Name: place; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -513,7 +511,7 @@ CREATE TABLE place (
 ALTER TABLE place OWNER TO postgres;
 
 --
--- TOC entry 189 (class 1259 OID 17184)
+-- TOC entry 189 (class 1259 OID 25279)
 -- Name: status; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -562,7 +560,7 @@ CREATE TABLE status (
 ALTER TABLE status OWNER TO postgres;
 
 --
--- TOC entry 190 (class 1259 OID 17190)
+-- TOC entry 190 (class 1259 OID 25285)
 -- Name: ward; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -577,7 +575,7 @@ CREATE TABLE ward (
 ALTER TABLE ward OWNER TO postgres;
 
 --
--- TOC entry 191 (class 1259 OID 17193)
+-- TOC entry 191 (class 1259 OID 25288)
 -- Name: words; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -594,7 +592,7 @@ CREATE TABLE words (
 ALTER TABLE words OWNER TO postgres;
 
 --
--- TOC entry 192 (class 1259 OID 17199)
+-- TOC entry 192 (class 1259 OID 25294)
 -- Name: words_no_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -609,7 +607,7 @@ CREATE SEQUENCE words_no_seq
 ALTER TABLE words_no_seq OWNER TO postgres;
 
 --
--- TOC entry 2177 (class 0 OID 0)
+-- TOC entry 2178 (class 0 OID 0)
 -- Dependencies: 192
 -- Name: words_no_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -618,7 +616,7 @@ ALTER SEQUENCE words_no_seq OWNED BY words.no;
 
 
 --
--- TOC entry 1962 (class 2604 OID 17201)
+-- TOC entry 1963 (class 2604 OID 25296)
 -- Name: diag_no; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -626,7 +624,7 @@ ALTER TABLE ONLY diag ALTER COLUMN diag_no SET DEFAULT nextval('diag_diag_no_seq
 
 
 --
--- TOC entry 1964 (class 2604 OID 17202)
+-- TOC entry 1965 (class 2604 OID 25297)
 -- Name: exam_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -634,7 +632,7 @@ ALTER TABLE ONLY exam ALTER COLUMN exam_id SET DEFAULT nextval('exam_exam_id_seq
 
 
 --
--- TOC entry 1966 (class 2604 OID 17203)
+-- TOC entry 1967 (class 2604 OID 25298)
 -- Name: no; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -642,18 +640,18 @@ ALTER TABLE ONLY words ALTER COLUMN no SET DEFAULT nextval('words_no_seq'::regcl
 
 
 --
--- TOC entry 2126 (class 0 OID 17105)
+-- TOC entry 2127 (class 0 OID 25209)
 -- Dependencies: 172
 -- Data for Name: db_version; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY db_version (db_version) FROM stdin;
-1.06
+1.07
 \.
 
 
 --
--- TOC entry 2127 (class 0 OID 17108)
+-- TOC entry 2128 (class 0 OID 25212)
 -- Dependencies: 173
 -- Data for Name: default_findings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -681,7 +679,7 @@ COPY default_findings (exam_type, findings) FROM stdin;
 
 
 --
--- TOC entry 2128 (class 0 OID 17114)
+-- TOC entry 2129 (class 0 OID 25218)
 -- Dependencies: 174
 -- Data for Name: department; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -693,17 +691,17 @@ COPY department (code, name1, name2, dp_visible, dp_order) FROM stdin;
 
 
 --
--- TOC entry 2129 (class 0 OID 17118)
+-- TOC entry 2130 (class 0 OID 25222)
 -- Dependencies: 175
 -- Data for Name: diag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY diag (diag_no, exam_no, diag_code, suspect, location, locate_str_after_diag) FROM stdin;
+COPY diag (diag_no, exam_no, diag_code, suspect, premodifier, postmodifier) FROM stdin;
 \.
 
 
 --
--- TOC entry 2130 (class 0 OID 17121)
+-- TOC entry 2131 (class 0 OID 25225)
 -- Dependencies: 176
 -- Data for Name: diag_category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -747,7 +745,7 @@ COPY diag_category (id, start_no, end_no, name_eng, name_jp, bt_order, visible, 
 
 
 --
--- TOC entry 2179 (class 0 OID 0)
+-- TOC entry 2180 (class 0 OID 0)
 -- Dependencies: 177
 -- Name: diag_diag_no_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -756,7 +754,7 @@ SELECT pg_catalog.setval('diag_diag_no_seq', 45, true);
 
 
 --
--- TOC entry 2132 (class 0 OID 17129)
+-- TOC entry 2133 (class 0 OID 25233)
 -- Dependencies: 178
 -- Data for Name: diag_name; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1125,7 +1123,7 @@ COPY diag_name (no, name_eng, name_jp, diag_order, diag_visible, name_ar, name_b
 
 
 --
--- TOC entry 2133 (class 0 OID 17135)
+-- TOC entry 2134 (class 0 OID 25239)
 -- Dependencies: 179
 -- Data for Name: equipment; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1136,7 +1134,7 @@ COPY equipment (equipment_no, name, equipment_type, gf_order, cf_order, sv_order
 
 
 --
--- TOC entry 2134 (class 0 OID 17139)
+-- TOC entry 2135 (class 0 OID 25243)
 -- Dependencies: 180
 -- Data for Name: equipment_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1153,7 +1151,7 @@ COPY equipment_type (type_no, name, type_order, type_visible) FROM stdin;
 
 
 --
--- TOC entry 2135 (class 0 OID 17142)
+-- TOC entry 2136 (class 0 OID 25246)
 -- Dependencies: 181
 -- Data for Name: exam; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1163,7 +1161,7 @@ COPY exam (exam_id, pt_id, purpose, department, order_dr, ward_id, exam_day, exa
 
 
 --
--- TOC entry 2180 (class 0 OID 0)
+-- TOC entry 2181 (class 0 OID 0)
 -- Dependencies: 182
 -- Name: exam_exam_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1172,7 +1170,7 @@ SELECT pg_catalog.setval('exam_exam_id_seq', 68, true);
 
 
 --
--- TOC entry 2137 (class 0 OID 17150)
+-- TOC entry 2138 (class 0 OID 25254)
 -- Dependencies: 183
 -- Data for Name: exam_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1192,15 +1190,15 @@ COPY exam_type (type_no, name_eng, name_jp, type_order, type_visible, name_ar, n
 1012	Skin US	表在エコー	1012	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 1	GF	GF	1	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 2	CF	CF	2	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-4	Baloon	Baloon	4	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-5	Capsule	カプセル内視鏡	5	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-3	SideView	側視鏡	3	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-100	Broncho	気管支鏡	100	t	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4	Baloon	Baloon	4	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3	SideView	側視鏡	3	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5	Capsule	カプセル内視鏡	5	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+100	Broncho	気管支鏡	100	f	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
 --
--- TOC entry 2138 (class 0 OID 17156)
+-- TOC entry 2139 (class 0 OID 25260)
 -- Dependencies: 184
 -- Data for Name: explanation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1210,7 +1208,7 @@ COPY explanation (no, explanation_status, status_order, status_visible) FROM std
 
 
 --
--- TOC entry 2139 (class 0 OID 17162)
+-- TOC entry 2140 (class 0 OID 25263)
 -- Dependencies: 185
 -- Data for Name: op_category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1222,7 +1220,7 @@ COPY op_category (opc_no, opc_name, opc_visible, opc_order, can_diag) FROM stdin
 
 
 --
--- TOC entry 2140 (class 0 OID 17165)
+-- TOC entry 2141 (class 0 OID 25266)
 -- Dependencies: 186
 -- Data for Name: operator; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1233,7 +1231,7 @@ test	test	1	1	test	t	1	\N	\N	t	t
 
 
 --
--- TOC entry 2141 (class 0 OID 17174)
+-- TOC entry 2142 (class 0 OID 25269)
 -- Dependencies: 187
 -- Data for Name: patient; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1245,7 +1243,7 @@ COPY patient (pt_id, pt_name, birthday, gender, pt_memo, lock_time, terminal_ip)
 
 
 --
--- TOC entry 2142 (class 0 OID 17180)
+-- TOC entry 2143 (class 0 OID 25275)
 -- Dependencies: 188
 -- Data for Name: place; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1258,7 +1256,7 @@ COPY place (place_no, name1, name2, place_order_endo, place_order_us, place_visi
 
 
 --
--- TOC entry 2143 (class 0 OID 17184)
+-- TOC entry 2144 (class 0 OID 25279)
 -- Dependencies: 189
 -- Data for Name: status; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1273,7 +1271,7 @@ COPY status (status_no, name_eng, name_jp, status_order, status_visible, name_ar
 
 
 --
--- TOC entry 2144 (class 0 OID 17190)
+-- TOC entry 2145 (class 0 OID 25285)
 -- Dependencies: 190
 -- Data for Name: ward; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1284,7 +1282,7 @@ COPY ward (ward_no, ward, ward_order, ward_visible) FROM stdin;
 
 
 --
--- TOC entry 2145 (class 0 OID 17193)
+-- TOC entry 2146 (class 0 OID 25288)
 -- Dependencies: 191
 -- Data for Name: words; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1328,7 +1326,7 @@ COPY words (no, words1, words2, words3, operator, word_order) FROM stdin;
 
 
 --
--- TOC entry 2181 (class 0 OID 0)
+-- TOC entry 2182 (class 0 OID 0)
 -- Dependencies: 192
 -- Name: words_no_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1337,7 +1335,7 @@ SELECT pg_catalog.setval('words_no_seq', 39, true);
 
 
 --
--- TOC entry 1968 (class 2606 OID 17696)
+-- TOC entry 1969 (class 2606 OID 25787)
 -- Name: db_version_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1346,7 +1344,7 @@ ALTER TABLE ONLY db_version
 
 
 --
--- TOC entry 1970 (class 2606 OID 17698)
+-- TOC entry 1971 (class 2606 OID 25789)
 -- Name: default_findings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1355,7 +1353,7 @@ ALTER TABLE ONLY default_findings
 
 
 --
--- TOC entry 1972 (class 2606 OID 17700)
+-- TOC entry 1973 (class 2606 OID 25791)
 -- Name: department_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1364,7 +1362,7 @@ ALTER TABLE ONLY department
 
 
 --
--- TOC entry 1976 (class 2606 OID 17702)
+-- TOC entry 1977 (class 2606 OID 25793)
 -- Name: diag_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1373,7 +1371,7 @@ ALTER TABLE ONLY diag_category
 
 
 --
--- TOC entry 1978 (class 2606 OID 17704)
+-- TOC entry 1979 (class 2606 OID 25795)
 -- Name: diag_name_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1382,7 +1380,7 @@ ALTER TABLE ONLY diag_name
 
 
 --
--- TOC entry 1974 (class 2606 OID 17706)
+-- TOC entry 1975 (class 2606 OID 25797)
 -- Name: diag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1391,7 +1389,7 @@ ALTER TABLE ONLY diag
 
 
 --
--- TOC entry 1982 (class 2606 OID 17708)
+-- TOC entry 1983 (class 2606 OID 25799)
 -- Name: equipment_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1400,7 +1398,7 @@ ALTER TABLE ONLY equipment_type
 
 
 --
--- TOC entry 1984 (class 2606 OID 17710)
+-- TOC entry 1985 (class 2606 OID 25801)
 -- Name: exam_pkey1; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1409,7 +1407,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 1986 (class 2606 OID 17712)
+-- TOC entry 1987 (class 2606 OID 25803)
 -- Name: exam_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1418,7 +1416,7 @@ ALTER TABLE ONLY exam_type
 
 
 --
--- TOC entry 1988 (class 2606 OID 17714)
+-- TOC entry 1989 (class 2606 OID 25805)
 -- Name: explanation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1427,7 +1425,7 @@ ALTER TABLE ONLY explanation
 
 
 --
--- TOC entry 1990 (class 2606 OID 17718)
+-- TOC entry 1991 (class 2606 OID 25807)
 -- Name: op_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1436,7 +1434,7 @@ ALTER TABLE ONLY op_category
 
 
 --
--- TOC entry 1992 (class 2606 OID 17720)
+-- TOC entry 1993 (class 2606 OID 25809)
 -- Name: operator_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1445,7 +1443,7 @@ ALTER TABLE ONLY operator
 
 
 --
--- TOC entry 1994 (class 2606 OID 17724)
+-- TOC entry 1995 (class 2606 OID 25811)
 -- Name: patient_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1454,7 +1452,7 @@ ALTER TABLE ONLY patient
 
 
 --
--- TOC entry 1996 (class 2606 OID 17726)
+-- TOC entry 1997 (class 2606 OID 25813)
 -- Name: room_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1463,7 +1461,7 @@ ALTER TABLE ONLY place
 
 
 --
--- TOC entry 1980 (class 2606 OID 17728)
+-- TOC entry 1981 (class 2606 OID 25815)
 -- Name: scope_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1472,7 +1470,7 @@ ALTER TABLE ONLY equipment
 
 
 --
--- TOC entry 1998 (class 2606 OID 17730)
+-- TOC entry 1999 (class 2606 OID 25817)
 -- Name: status_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1481,7 +1479,7 @@ ALTER TABLE ONLY status
 
 
 --
--- TOC entry 2000 (class 2606 OID 17732)
+-- TOC entry 2001 (class 2606 OID 25819)
 -- Name: ward_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1490,7 +1488,7 @@ ALTER TABLE ONLY ward
 
 
 --
--- TOC entry 2002 (class 2606 OID 17734)
+-- TOC entry 2003 (class 2606 OID 25821)
 -- Name: words_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1499,7 +1497,7 @@ ALTER TABLE ONLY words
 
 
 --
--- TOC entry 2006 (class 2606 OID 17735)
+-- TOC entry 2007 (class 2606 OID 25822)
 -- Name: department; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1508,7 +1506,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 2016 (class 2606 OID 17740)
+-- TOC entry 2017 (class 2606 OID 25827)
 -- Name: department; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1517,7 +1515,7 @@ ALTER TABLE ONLY operator
 
 
 --
--- TOC entry 2003 (class 2606 OID 17745)
+-- TOC entry 2004 (class 2606 OID 25832)
 -- Name: diag_name; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1526,7 +1524,7 @@ ALTER TABLE ONLY diag
 
 
 --
--- TOC entry 2007 (class 2606 OID 17750)
+-- TOC entry 2008 (class 2606 OID 25837)
 -- Name: equipment; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1535,7 +1533,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 2005 (class 2606 OID 17755)
+-- TOC entry 2006 (class 2606 OID 25842)
 -- Name: equipment_type; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1544,7 +1542,7 @@ ALTER TABLE ONLY equipment
 
 
 --
--- TOC entry 2004 (class 2606 OID 17760)
+-- TOC entry 2005 (class 2606 OID 25847)
 -- Name: exam; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1553,7 +1551,7 @@ ALTER TABLE ONLY diag
 
 
 --
--- TOC entry 2008 (class 2606 OID 17765)
+-- TOC entry 2009 (class 2606 OID 25852)
 -- Name: exam_type; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1562,7 +1560,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 2009 (class 2606 OID 17770)
+-- TOC entry 2010 (class 2606 OID 25857)
 -- Name: operator1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1571,7 +1569,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 2010 (class 2606 OID 17775)
+-- TOC entry 2011 (class 2606 OID 25862)
 -- Name: operator2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1580,7 +1578,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 2011 (class 2606 OID 17780)
+-- TOC entry 2012 (class 2606 OID 25867)
 -- Name: operator3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1589,7 +1587,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 2012 (class 2606 OID 17785)
+-- TOC entry 2013 (class 2606 OID 25872)
 -- Name: operator4; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1598,7 +1596,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 2013 (class 2606 OID 17790)
+-- TOC entry 2014 (class 2606 OID 25877)
 -- Name: operator5; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1607,7 +1605,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 2014 (class 2606 OID 17795)
+-- TOC entry 2015 (class 2606 OID 25882)
 -- Name: place; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1616,7 +1614,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 2015 (class 2606 OID 17800)
+-- TOC entry 2016 (class 2606 OID 25887)
 -- Name: ward; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1625,7 +1623,7 @@ ALTER TABLE ONLY exam
 
 
 --
--- TOC entry 2153 (class 0 OID 0)
+-- TOC entry 2154 (class 0 OID 0)
 -- Dependencies: 6
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -1637,7 +1635,7 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
--- TOC entry 2155 (class 0 OID 0)
+-- TOC entry 2156 (class 0 OID 0)
 -- Dependencies: 172
 -- Name: db_version; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1649,7 +1647,7 @@ GRANT SELECT ON TABLE db_version TO db_users;
 
 
 --
--- TOC entry 2156 (class 0 OID 0)
+-- TOC entry 2157 (class 0 OID 0)
 -- Dependencies: 173
 -- Name: default_findings; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1661,7 +1659,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE default_findings TO db_users;
 
 
 --
--- TOC entry 2157 (class 0 OID 0)
+-- TOC entry 2158 (class 0 OID 0)
 -- Dependencies: 174
 -- Name: department; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1673,7 +1671,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE department TO db_users;
 
 
 --
--- TOC entry 2158 (class 0 OID 0)
+-- TOC entry 2159 (class 0 OID 0)
 -- Dependencies: 175
 -- Name: diag; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1685,7 +1683,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE diag TO db_users;
 
 
 --
--- TOC entry 2159 (class 0 OID 0)
+-- TOC entry 2160 (class 0 OID 0)
 -- Dependencies: 176
 -- Name: diag_category; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1697,7 +1695,7 @@ GRANT SELECT ON TABLE diag_category TO db_users;
 
 
 --
--- TOC entry 2161 (class 0 OID 0)
+-- TOC entry 2162 (class 0 OID 0)
 -- Dependencies: 177
 -- Name: diag_diag_no_seq; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1709,7 +1707,7 @@ GRANT ALL ON SEQUENCE diag_diag_no_seq TO db_users;
 
 
 --
--- TOC entry 2162 (class 0 OID 0)
+-- TOC entry 2163 (class 0 OID 0)
 -- Dependencies: 178
 -- Name: diag_name; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1721,7 +1719,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE diag_name TO db_users;
 
 
 --
--- TOC entry 2163 (class 0 OID 0)
+-- TOC entry 2164 (class 0 OID 0)
 -- Dependencies: 179
 -- Name: equipment; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1733,7 +1731,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE equipment TO db_users;
 
 
 --
--- TOC entry 2164 (class 0 OID 0)
+-- TOC entry 2165 (class 0 OID 0)
 -- Dependencies: 180
 -- Name: equipment_type; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1745,7 +1743,7 @@ GRANT SELECT,UPDATE ON TABLE equipment_type TO db_users;
 
 
 --
--- TOC entry 2165 (class 0 OID 0)
+-- TOC entry 2166 (class 0 OID 0)
 -- Dependencies: 181
 -- Name: exam; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1757,7 +1755,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE exam TO db_users;
 
 
 --
--- TOC entry 2167 (class 0 OID 0)
+-- TOC entry 2168 (class 0 OID 0)
 -- Dependencies: 182
 -- Name: exam_exam_id_seq; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1769,7 +1767,7 @@ GRANT ALL ON SEQUENCE exam_exam_id_seq TO db_users;
 
 
 --
--- TOC entry 2168 (class 0 OID 0)
+-- TOC entry 2169 (class 0 OID 0)
 -- Dependencies: 183
 -- Name: exam_type; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1781,7 +1779,7 @@ GRANT SELECT,UPDATE ON TABLE exam_type TO db_users;
 
 
 --
--- TOC entry 2169 (class 0 OID 0)
+-- TOC entry 2170 (class 0 OID 0)
 -- Dependencies: 184
 -- Name: explanation; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1793,7 +1791,7 @@ GRANT SELECT ON TABLE explanation TO db_users;
 
 
 --
--- TOC entry 2170 (class 0 OID 0)
+-- TOC entry 2171 (class 0 OID 0)
 -- Dependencies: 185
 -- Name: op_category; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1805,7 +1803,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE op_category TO db_users;
 
 
 --
--- TOC entry 2171 (class 0 OID 0)
+-- TOC entry 2172 (class 0 OID 0)
 -- Dependencies: 186
 -- Name: operator; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1817,7 +1815,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE operator TO db_users;
 
 
 --
--- TOC entry 2172 (class 0 OID 0)
+-- TOC entry 2173 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: patient; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1829,7 +1827,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE patient TO db_users;
 
 
 --
--- TOC entry 2173 (class 0 OID 0)
+-- TOC entry 2174 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: place; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1841,7 +1839,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE place TO db_users;
 
 
 --
--- TOC entry 2174 (class 0 OID 0)
+-- TOC entry 2175 (class 0 OID 0)
 -- Dependencies: 189
 -- Name: status; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1853,7 +1851,7 @@ GRANT SELECT ON TABLE status TO db_users;
 
 
 --
--- TOC entry 2175 (class 0 OID 0)
+-- TOC entry 2176 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: ward; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1865,7 +1863,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE ward TO db_users;
 
 
 --
--- TOC entry 2176 (class 0 OID 0)
+-- TOC entry 2177 (class 0 OID 0)
 -- Dependencies: 191
 -- Name: words; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1877,7 +1875,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE words TO db_users;
 
 
 --
--- TOC entry 2178 (class 0 OID 0)
+-- TOC entry 2179 (class 0 OID 0)
 -- Dependencies: 192
 -- Name: words_no_seq; Type: ACL; Schema: public; Owner: postgres
 --
@@ -1888,7 +1886,7 @@ GRANT ALL ON SEQUENCE words_no_seq TO postgres;
 GRANT ALL ON SEQUENCE words_no_seq TO db_users;
 
 
--- Completed on 2015-02-26 02:04:08
+-- Completed on 2015-04-13 00:02:11
 
 --
 -- PostgreSQL database dump complete
@@ -1904,7 +1902,7 @@ SET default_transaction_read_only = off;
 
 -- Dumped from database version 9.4.1
 -- Dumped by pg_dump version 9.4.1
--- Started on 2015-02-26 02:04:08
+-- Started on 2015-04-13 00:02:12
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1968,7 +1966,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2015-02-26 02:04:12
+-- Completed on 2015-04-13 00:02:14
 
 --
 -- PostgreSQL database dump complete
@@ -1984,7 +1982,7 @@ SET default_transaction_read_only = off;
 
 -- Dumped from database version 9.4.1
 -- Dumped by pg_dump version 9.4.1
--- Started on 2015-02-26 02:04:12
+-- Started on 2015-04-13 00:02:14
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2031,13 +2029,13 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2015-02-26 02:04:16
+-- Completed on 2015-04-13 00:02:18
 
 --
 -- PostgreSQL database dump complete
 --
 
--- Completed on 2015-02-26 02:04:16
+-- Completed on 2015-04-13 00:02:18
 
 --
 -- PostgreSQL database cluster dump complete
