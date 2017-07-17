@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
 using Npgsql;
 
 namespace FE_setup
@@ -44,13 +42,21 @@ namespace FE_setup
 
                 try
                 { conn.Open(); }
-                catch (NpgsqlException)
+                catch (NpgsqlException nex)
                 {
+                    MessageBox.Show(nex.Message, "Npgsql Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     conn.Close();
                     return functionResult.connectionError;
                 }
-                catch (System.IO.IOException)
+                catch (IOException ioe)
                 {
+                    MessageBox.Show(ioe.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    conn.Close();
+                    return functionResult.connectionError;
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     conn.Close();
                     return functionResult.connectionError;
                 }
@@ -71,8 +77,9 @@ namespace FE_setup
 
                     command.ExecuteNonQuery();
                 }
-                catch (System.Exception) // ex)
+                catch (Exception ex)
                 {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     conn.Close();
                     //throw ex;
                     return functionResult.failed;
@@ -93,13 +100,21 @@ namespace FE_setup
 
                 try
                 { conn.Open(); }
-                catch (NpgsqlException)
+                catch (NpgsqlException nex)
                 {
+                    MessageBox.Show(nex.Message, "Npgsql Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     conn.Close();
                     return functionResult.connectionError;
                 }
-                catch (System.IO.IOException)
+                catch (IOException ioe)
                 {
+                    MessageBox.Show(ioe.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    conn.Close();
+                    return functionResult.connectionError;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     conn.Close();
                     return functionResult.connectionError;
                 }
@@ -126,8 +141,9 @@ namespace FE_setup
                     //Commit transaction
                     transaction.Commit();
                 }
-                catch (System.Exception) // ex)
+                catch (Exception ex) // ex)
                 {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     //Roll back transaction
                     transaction.Rollback();
                     conn.Close();

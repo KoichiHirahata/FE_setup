@@ -64,11 +64,10 @@ namespace FE_setup
             #endregion
 
             pwSet = true;
-            srvIP = this.tbIP.Text;
-            srvPort = this.tbPort.Text;
-            pw = this.tbPw.Text;
-            this.Close();
+            srvIP = tbIP.Text;
+            srvPort = tbPort.Text;
+            pw = tbPw.Text;
+            Close();
         }
-
     }
 }

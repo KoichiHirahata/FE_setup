@@ -15,14 +15,19 @@ namespace FE_setup
 {
     public partial class mainForm : Form
     {
-        private string sslString = "SSL=true;SslMode=Require;";
+        private string sslString = "SSL Mode=Require;Trust Server Certificate=true";
         public mainForm()
         { InitializeComponent(); }
 
         private void btCreateEndoDB_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = @"C:\Program Files";
+            string defaultDirectory = @"C:\Program Files\PostgreSQL";
+            if (Directory.Exists(defaultDirectory))
+            { ofd.InitialDirectory = defaultDirectory; }
+            else
+            { ofd.InitialDirectory = @"C:\Program Files"; }
+
             ofd.Filter = "psql.exe(psql.exe)|psql.exe|All Files(*.*)|*.*";
             ofd.FilterIndex = 1;
             ofd.Title = Properties.Resources.WhereIsPsql;
@@ -41,7 +46,7 @@ namespace FE_setup
                 if (sp.portSet)
                 {
                     System.Diagnostics.Process p = new System.Diagnostics.Process(); //Create process object
-                    p.StartInfo.FileName = System.Environment.GetEnvironmentVariable("ComSpec"); //Get ComSpec(cmd.exe) path, and set to FileName property
+                    p.StartInfo.FileName = Environment.GetEnvironmentVariable("ComSpec"); //Get ComSpec(cmd.exe) path, and set to FileName property
                     p.StartInfo.UseShellExecute = false;
                     //p.StartInfo.RedirectStandardOutput = true; //Make output readable
                     //p.StartInfo.RedirectStandardInput = false;
@@ -86,42 +91,104 @@ namespace FE_setup
                 string sql_path;
 
                 if (ofd.ShowDialog() == DialogResult.OK)
-                { sql_path = ofd.FileName; }
+                {
+                    sql_path = ofd.FileName;
+                    ofd.Dispose();
+                }
                 else
-                { return; }
+                {
+                    ofd.Dispose();
+                    spf.Dispose();
+                    return;
+                }
 
-                string conn = "Server=" + spf.srvIP + ";Port=" + spf.srvPort + ";User Id=postgres;Password=" + spf.pw + ";Database=endoDB;" + sslString;
-                functions.functionResult rst;
+                string connStr = "Host=" + spf.srvIP + ";Port=" + spf.srvPort + ";Username=postgres;Password=" + spf.pw + ";Database=endoDB;" + sslString;
 
                 if (File.Exists(sql_path))
                 {
-                    StreamReader file = new StreamReader(sql_path);
-                    List<string> SQLs = new List<string>();
-                    string line;
-                    while (!string.IsNullOrWhiteSpace((line = file.ReadLine())))
-                    { SQLs.Add(line); }
+                    string SQL = "";
 
-                    for (int i = 0; i < SQLs.Count; i++)
+                    using (StreamReader file = new StreamReader(sql_path))
                     {
-                        //MessageBox.Show(SQLs[i]);
-                        rst = functions.doSQL(conn, SQLs[i]);
-                        if (rst == functions.functionResult.failed)
-                        { MessageBox.Show("[SQL: Line " + (i + 1).ToString() + "]" + Properties.Resources.DataBaseError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
-                        else if (rst == functions.functionResult.connectionError)
+                        try
                         {
-                            MessageBox.Show("[SQL: Line " + (i + 1).ToString() + "]" + Properties.Resources.ConnectFailed, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
+                            while (file.Peek() >= 0)
+                            {
+                                string buffer = file.ReadLine();
+                                SQL += buffer + Environment.NewLine;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            throw;
+                        }
+                        finally
+                        {
+                            if (file != null)
+                            { file.Close(); }
                         }
                     }
-                    MessageBox.Show("[SQL File]" + Properties.Resources.ProcedureFinished, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show("[SQL File]" + Properties.Resources.FileNotExist, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+
+                    try
+                    {
+                        using (var conn = new NpgsqlConnection(connStr))
+                        {
+                            try
+                            { conn.Open(); }
+                            catch (NpgsqlException npe)
+                            {
+                                MessageBox.Show(Properties.Resources.CouldntOpenConn + "\r\n" + npe.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                conn.Close();
+                            }
+                            catch (IOException ioe)
+                            {
+                                MessageBox.Show(Properties.Resources.ConnClosed + "\r\n" + ioe.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                conn.Close();
+                            }
+
+                            if (conn.State == ConnectionState.Open)
+                            {
+
+                                using (var cmd = new NpgsqlCommand())
+                                {
+                                    try
+                                    {
+                                        cmd.Connection = conn;
+                                        cmd.CommandText = SQL;
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                    catch (NpgsqlException nex)
+                                    {
+                                        MessageBox.Show("[NpgsqlException]\r\n" + nex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                    finally
+                                    {
+                                        conn.Close();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show(Properties.Resources.CouldntOpenConn, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                conn.Close();
+                            }
+                        }
+                    }
+                    catch (ArgumentException ae)
+                    {
+                        MessageBox.Show(Properties.Resources.WrongConnectingString + "\r\n" + ae.Message, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
-
             spf.Dispose();
         }
 
@@ -133,7 +200,7 @@ namespace FE_setup
             if (spf.pwSet)
             {
                 //string conn = "Server=" + spf.srvIP + ";Port=" + spf.srvPort + ";User Id=postgres;Password=" + spf.pw + ";Database=endoDB;";
-                string conn = "Server=" + spf.srvIP + ";Port=" + spf.srvPort + ";User Id=postgres;Password=" + spf.pw + ";" + sslString;
+                string conn = "Host=" + spf.srvIP + ";Port=" + spf.srvPort + ";Username=postgres;Password=" + spf.pw + ";" + sslString;
                 functions.functionResult rst;
 
                 SetDbUserPw sdup = new SetDbUserPw();
@@ -203,7 +270,7 @@ namespace FE_setup
                 if (sp.portSet)
                 {
                     System.Diagnostics.Process p = new System.Diagnostics.Process(); //Create process object
-                    p.StartInfo.FileName = System.Environment.GetEnvironmentVariable("ComSpec"); //Get ComSpec(cmd.exe) path, and set to FileName property
+                    p.StartInfo.FileName = Environment.GetEnvironmentVariable("ComSpec"); //Get ComSpec(cmd.exe) path, and set to FileName property
                     p.StartInfo.UseShellExecute = false;
                     //p.StartInfo.RedirectStandardOutput = true; //Make output readable
                     //p.StartInfo.RedirectStandardInput = false;
