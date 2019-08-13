@@ -157,6 +157,8 @@ namespace FE_setup
                                         cmd.Connection = conn;
                                         cmd.CommandText = SQL;
                                         cmd.ExecuteNonQuery();
+
+                                        MessageBox.Show(Properties.Resources.ProcedureFinished, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     }
                                     catch (NpgsqlException nex)
                                     {
